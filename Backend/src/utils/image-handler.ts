@@ -45,7 +45,7 @@ async function updateImage(
   await deleteImage(existingImageUrl, imagePath);
 
   // Delete existing image
-  const uniqueImageUrl = await saveImage(image, imagePaths.products);
+  const uniqueImageUrl = await saveImage(image, imagePaths.vacations);
 
   return uniqueImageUrl;
 }
@@ -69,7 +69,7 @@ async function getImageUrlFromDB(
   id: number,
   imagePath: imagePaths
 ): Promise<string> {
-  if (imagePath === imagePaths.products) {
+  if (imagePath === imagePaths.vacations) {
     console.log('products')
     const sql = `
     SELECT imageUrl FROM products

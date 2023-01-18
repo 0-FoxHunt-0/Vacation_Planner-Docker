@@ -1,5 +1,5 @@
 enum imagePaths {
-    products = './src/assets/images/products/',
+    vacations = './src/assets/images/vacations/',
     employees = './src/assets/images/employees/'
 }
 
