@@ -1,0 +1,14 @@
+html, body, #root {
+  margin: 0;
+  text-align: center;
+  height: 100%;
+  font-size: large;
+  background-image: linear-gradient(to bottom right, #FDD07A ,#FFFFFF);
+  color: black;
+}
+
+
+
+.MenuHr {
+  margin-top: 0;
+}

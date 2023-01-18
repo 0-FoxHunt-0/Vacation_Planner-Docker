@@ -1,0 +1,19 @@
+.Menu {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #000000;
+    height: 100%;
+}
+
+.Menu>a {
+    color: white;
+    text-decoration: none;
+}
+
+.Menu>a:hover {
+    color: lightgray;
+}
+
+.Menu> a:active {
+    color: gray;
+}
