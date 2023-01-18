@@ -12,7 +12,7 @@ class CredentialsModel {
     }
 
     private static credentialsValidationSchema = Joi.object({
-        username: Joi.string()
+        email: Joi.string()
         .required()
         .min(2)
         .max(100),

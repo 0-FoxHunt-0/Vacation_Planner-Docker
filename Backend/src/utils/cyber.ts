@@ -2,7 +2,8 @@ import UserModel from "../models/user-model";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { Request, Response } from "express";
 import { AuthenticationError } from "../models/client-errors";
-import crypto from "crypto"
+import crypto from "crypto";
+import RoleModel from "../models/role-model";
 
 const secretKey = "vacation-handler";
 
@@ -57,27 +58,45 @@ function verifyToken(request: Request): Promise<boolean> {
   });
 }
 
+async function verifyAdmin(request: Request): Promise<boolean> {
+  await verifyToken(request);
+  // const header = request.header("authorization");
+  // const token = header.substring(7);
+  // const user: UserModel = (jwt.decode(token) as any).user;
+  const user = getUserFromToken(request)
+  return user.role === RoleModel.Admin;
+}
+
+function getUserFromToken(request: Request): UserModel {
+  const header = request.header("authorization");
+  const token = header.substring(7);
+  const user: UserModel = (jwt.decode(token) as any).user;
+  return user;
+}
+
 // Hash password:
 // SHA - Secure Hashing Algorithm
 // HMAC - Hash based Message Authentication Code
 function hashPassword(plainText: string): string {
-
-  if(!plainText) return null;
-
+  if (!plainText) return null;
 
   // Hashing without SALT:
   // const hashedPassword = crypto.createHash("sha512").update(plainText).digest("hex");
 
   // Hashing with SALT:
-  const salt = "MakeThingsGoRight"
-  const hashedPassword = crypto.createHmac("sha512", salt).update(plainText).digest("hex")
+  const salt = "MakeThingsGoRight";
+  const hashedPassword = crypto
+    .createHmac("sha512", salt)
+    .update(plainText)
+    .digest("hex");
 
   return hashedPassword;
-
 }
 
 export default {
   createNewToken,
   verifyToken,
-  hashPassword
+  verifyAdmin,
+  getUserFromToken,
+  hashPassword,
 };

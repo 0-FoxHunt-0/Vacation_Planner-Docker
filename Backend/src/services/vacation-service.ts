@@ -1,13 +1,27 @@
 import { OkPacket } from "mysql";
 import imagePaths from "../models/enum";
+import UserModel from "../models/user-model";
 import VacationModel from "../models/vacation-model";
 import dal from "../utils/dal";
 import imageHandler from "../utils/image-handler";
 
-async function getAllVacations(): Promise<VacationModel[]> {
-  const sql = `SELECT * FROM vacations`;
+async function getAllVacations(user: UserModel): Promise<VacationModel[]> {
 
-  const vacations = await dal.execute(sql);
+//   const sql = `SELECT * FROM vacations`;
+
+const sql = 
+`
+    SELECT DISTINCT 
+            V.*,
+            EXISTS(SELECT * FROM following WHERE vacationId = vacationId = F.vacationId AND userId = ?) AS isFollowing,
+            COUNT(F.userId) AS followerCount
+        FROM vacations AS V LEFT JOIN following AS F
+        ON V.vacationId = F.vacationId
+        GROUP BY vacationId
+        ORDER BY startDate
+`
+
+  const vacations = await dal.execute(sql, user.userId);
 
   return vacations;
 }
