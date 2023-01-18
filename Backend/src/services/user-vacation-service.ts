@@ -7,13 +7,13 @@ async function getAllVacations(user: UserModel): Promise<VacationModel[]> {
 
   const sql = `
     SELECT DISTINCT 
-            V.*,
-            EXISTS(SELECT * FROM following WHERE vacationId = vacationId = F.vacationId AND userId = ?) AS isFollowing,
-            COUNT(F.userId) AS followerCount
-        FROM vacations AS V LEFT JOIN following AS F
-        ON V.vacationId = F.vacationId
-        GROUP BY vacationId
-        ORDER BY startDate
+        V.*,
+        EXISTS(SELECT * FROM following WHERE vacationId = vacationId = F.vacationId AND userId = ?) AS isFollowing,
+        COUNT(F.userId) AS followerCount
+    FROM vacations AS V LEFT JOIN following AS F
+    ON V.vacationId = F.vacationId
+    GROUP BY vacationId
+    ORDER BY startDate
 `;
 
   const vacations = await dal.execute(sql, user.userId);

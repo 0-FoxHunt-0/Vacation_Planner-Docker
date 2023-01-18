@@ -100,13 +100,13 @@ async function getImageUrlFromDB(
   }
 }
 
-function getAbsoluteProductsPath(imageUrl: string): string {
+function getAbsoluteVacationsPath(imageUrl: string): string {
   let absolutePath = path.join(
     __dirname,
     "..",
     "assets",
     "images",
-    "products",
+    "vacations",
     imageUrl
   );
   if (!fs.existsSync(absolutePath)) {
@@ -149,6 +149,6 @@ export default {
   saveImage,
   updateImage,
   deleteImage,
-  getAbsoluteProductsPath,
+  getAbsoluteVacationsPath,
   getAbsoluteEmployeesPath,
 };

@@ -1,7 +1,10 @@
+import { createObjectCsvWriter } from "csv-writer";
 import express, { Request, Response, NextFunction } from "express";
+import path, { dirname } from "path";
 import verifyAdmin from "../middleware/verify-admin";
 import VacationModel from "../models/vacation-model";
 import adminVacationService from "../services/admin-vacation-service";
+import dal from "../utils/dal";
 
 const adminRouter = express.Router(); // Capital R
 
@@ -11,8 +14,8 @@ adminRouter.get(
   verifyAdmin,
   async (request: Request, response: Response, next: NextFunction) => {
     try {
-      const vacations = await adminVacationService.getAllVacationsForAdmin()
-      response.json(vacations)
+      const vacations = await adminVacationService.getAllVacationsForAdmin();
+      response.json(vacations);
     } catch (err: any) {
       next(err);
     }
@@ -25,9 +28,9 @@ adminRouter.get(
   verifyAdmin,
   async (request: Request, response: Response, next: NextFunction) => {
     try {
-      const id = +request.params.id
-      const vacation = await adminVacationService.getVacationById(id)
-      response.json(vacation)
+      const id = +request.params.id;
+      const vacation = await adminVacationService.getVacationById(id);
+      response.json(vacation);
     } catch (err: any) {
       next(err);
     }
@@ -40,9 +43,9 @@ adminRouter.post(
   async (request: Request, response: Response, next: NextFunction) => {
     try {
       request.body.image = request.files?.image;
-      const vacation = new VacationModel(request.body)
-      const addedVacation = await adminVacationService.addVacation(vacation)
-      response.status(201).json(addedVacation)
+      const vacation = new VacationModel(request.body);
+      const addedVacation = await adminVacationService.addVacation(vacation);
+      response.status(201).json(addedVacation);
     } catch (err: any) {
       next(err);
     }
@@ -55,12 +58,28 @@ adminRouter.delete(
   async (request: Request, response: Response, next: NextFunction) => {
     try {
       const id = +request.params.id;
-      await adminVacationService.deleteVacation(id)
-      response.sendStatus(204)
+      await adminVacationService.deleteVacation(id);
+      response.sendStatus(204);
     } catch (err: any) {
       next(err);
     }
   }
 );
 
+adminRouter.get(
+  "/admin/csv-download",
+  verifyAdmin,
+  async (request: Request, response: Response, next: NextFunction) => {
+    try {
+      adminVacationService.vacationStatisticsCSV()
+      response.download(path.resolve(__dirname, "../assets/logs/CSVData.csv"));
+      response.attachment(
+        path.resolve(__dirname, "../assets/logs/CSVData.csv")
+      );
+      response.sendFile(path.resolve(__dirname, "../assets/logs/CSVData.csv"));
+    } catch (err: any) {
+      next(err);
+    }
+  }
+);
 export default adminRouter;

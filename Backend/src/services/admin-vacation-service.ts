@@ -1,4 +1,6 @@
+import { createObjectCsvWriter } from "csv-writer";
 import { OkPacket } from "mysql";
+import path from "path";
 import imagePaths from "../models/enum";
 import VacationModel from "../models/vacation-model";
 import dal from "../utils/dal";
@@ -52,9 +54,32 @@ async function deleteVacation(id: number): Promise<void> {
   await dal.execute(sql, id);
 }
 
+async function vacationStatisticsCSV(): Promise<void> {
+  const sql = `
+    SELECT 
+      V.destinaiton AS Destination, 
+      COUNT(F.userId) AS followerCount 
+    FROM vacations AS V LEFT JOIN following AS F ON V.vacationId = F.vacationId
+    GROUP BY Destination;
+    `;
+
+  const data = await dal.execute(sql);
+
+  const csvWriter = createObjectCsvWriter({
+    path: path.resolve(__dirname, "../assets/logs/CSVData.csv"),
+    header: [
+      { id: "Destination", title: "Destination" },
+      { id: "followerCount", title: "Followers" },
+    ],
+  });
+
+  await csvWriter.writeRecords(data);
+}
+
 export default {
   getAllVacationsForAdmin,
   getVacationById,
   addVacation,
   deleteVacation,
+  vacationStatisticsCSV,
 };
