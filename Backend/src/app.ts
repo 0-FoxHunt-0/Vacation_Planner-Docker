@@ -5,7 +5,8 @@ import expressFileUpload from "express-fileupload"
 import appConfig from "./utils/app-config";
 import routeNotFound from "./middleware/route-not-found";
 import catchAll from "./middleware/catch-all";
-import vacationRoutes from "./routes/vacation-routes";
+import userVacationRoutes from "./routes/user-vacation-routes";
+import adminVacationRoutes from "./routes/admin-vacation-routes";
 import authRoutes from "./routes/auth-routes";
 
 
@@ -15,7 +16,8 @@ server.use(express.json());
 server.use(expressFileUpload());
 
 server.use("/api", authRoutes)
-server.use("/api", vacationRoutes)
+server.use("/api", adminVacationRoutes)
+server.use("/api", userVacationRoutes)
 
 server.use(routeNotFound);
 server.use(catchAll);

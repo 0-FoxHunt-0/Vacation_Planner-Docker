@@ -1,44 +1,10 @@
 import { OkPacket } from "mysql";
 import imagePaths from "../models/enum";
-import UserModel from "../models/user-model";
 import VacationModel from "../models/vacation-model";
 import dal from "../utils/dal";
 import imageHandler from "../utils/image-handler";
 
-async function getAllVacations(user: UserModel): Promise<VacationModel[]> {
-  //   const sql = `SELECT * FROM vacations`;
-
-  const sql = `
-    SELECT DISTINCT 
-            V.*,
-            EXISTS(SELECT * FROM following WHERE vacationId = vacationId = F.vacationId AND userId = ?) AS isFollowing,
-            COUNT(F.userId) AS followerCount
-        FROM vacations AS V LEFT JOIN following AS F
-        ON V.vacationId = F.vacationId
-        GROUP BY vacationId
-        ORDER BY startDate
-`;
-
-  const vacations = await dal.execute(sql, user.userId);
-
-  return vacations;
-}
-
-async function follow(userId: number, vacationId: number): Promise<void> {
-    const sql = `INSERT INTO following VALUES(?, ?)`
-    await dal.execute(sql, userId, vacationId);
-}
-
-async function unfollow(userId: number, vacationId: number): Promise<void> {
-    const sql = `DELETE FROM following WHERE userId = ? AND vacationId = ?`
-    await dal.execute(sql, userId, vacationId);
-}
-
-// ----------------------------------------------------------------------------------------------------------------------------------------------- //
-
 async function getAllVacationsForAdmin(): Promise<VacationModel[]> {
-  //   const sql = `SELECT * FROM vacations`;
-
   const sql = `SELECT * FROM vacations ORDER BY startDate`;
   const vacations = await dal.execute(sql);
   return vacations;
@@ -87,11 +53,8 @@ async function deleteVacation(id: number): Promise<void> {
 }
 
 export default {
-  getAllVacations,
   getAllVacationsForAdmin,
   getVacationById,
   addVacation,
   deleteVacation,
-  follow,
-  unfollow,
 };
