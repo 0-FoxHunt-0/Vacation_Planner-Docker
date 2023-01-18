@@ -61,9 +61,7 @@ async function login(credentials: CredentialsModel): Promise<string> {
 async function isEmailTaken(email: string): Promise<boolean> {
   // Create sql query:
   const sql = `
-        SELECT COUNT(email) AS count
-        FROM users
-        WHERE email = ?
+        SELECT EXISTS (SELECT * FROM users WHERE email = ? AND password = ?) as isExist
     `;
 
   const table: OkPacket = await dal.execute(sql, email);
