@@ -7,7 +7,6 @@ import cyber from "../utils/cyber";
 import dal from "../utils/dal";
 
 async function register(user: UserModel): Promise<string> {
-
   //   user.validateUser();
 
   // If email taken:
@@ -17,16 +16,22 @@ async function register(user: UserModel): Promise<string> {
   // New user is assigned a user role:
   user.role = RoleModel.User;
 
+  user.password = cyber.hashPassword(user.password);
+
   // Create sql query:
   const sql = `
-        INSERT INTO users VALUES
-        (
-            DEFAULT, ?, ?, ?, ?, ?
-        )
+        INSERT INTO users VALUES(DEFAULT, ?, ?, ?, ?, ?)
     `;
 
   // Add to database:
-  const result: OkPacket = await dal.execute(sql, user.firstName, user.lastName, user.email, user.password, user.role);
+  const result: OkPacket = await dal.execute(
+    sql,
+    user.firstName,
+    user.lastName,
+    user.email,
+    user.password,
+    user.role
+  );
 
   // Set back id:
   user.userId = result.insertId;
@@ -39,6 +44,8 @@ async function register(user: UserModel): Promise<string> {
 
 async function login(credentials: CredentialsModel): Promise<string> {
   credentials.validateCredentials();
+
+  credentials.password = cyber.hashPassword(credentials.password);
 
   const sql = `SELECT * FROM users WHERE email = ? AND password = ?`;
 
@@ -61,7 +68,9 @@ async function login(credentials: CredentialsModel): Promise<string> {
 async function isEmailTaken(email: string): Promise<boolean> {
   // Create sql query:
   const sql = `
-        SELECT EXISTS (SELECT * FROM users WHERE email = ? AND password = ?) as isExist
+        SELECT COUNT(email) AS count
+        FROM users
+        WHERE email = ?
     `;
 
   const table: OkPacket = await dal.execute(sql, email);

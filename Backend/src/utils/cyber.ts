@@ -2,6 +2,7 @@ import UserModel from "../models/user-model";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { Request, Response } from "express";
 import { AuthenticationError } from "../models/client-errors";
+import crypto from "crypto"
 
 const secretKey = "vacation-handler";
 
@@ -56,7 +57,27 @@ function verifyToken(request: Request): Promise<boolean> {
   });
 }
 
+// Hash password:
+// SHA - Secure Hashing Algorithm
+// HMAC - Hash based Message Authentication Code
+function hashPassword(plainText: string): string {
+
+  if(!plainText) return null;
+
+
+  // Hashing without SALT:
+  // const hashedPassword = crypto.createHash("sha512").update(plainText).digest("hex");
+
+  // Hashing with SALT:
+  const salt = "MakeThingsGoRight"
+  const hashedPassword = crypto.createHmac("sha512", salt).update(plainText).digest("hex")
+
+  return hashedPassword;
+
+}
+
 export default {
   createNewToken,
   verifyToken,
+  hashPassword
 };
