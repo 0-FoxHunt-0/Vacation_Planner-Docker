@@ -69,12 +69,13 @@ async function updateVacation(vacation: VacationModel): Promise<VacationModel> {
             description = ?, 
             startDate = ?,
             endDate = ?,
+            price = ?,
             imageName = ?
         WHERE vacationId = ?
     `;
 
   // Execute query:
-  const result: OkPacket = await dal.execute(sql, vacation.destination, vacation.description, vacation.startDate, vacation.endDate, vacation.imageName, vacation.vacationId);
+  const result: OkPacket = await dal.execute(sql, vacation.destination, vacation.description, vacation.startDate, vacation.endDate, vacation.price, vacation.imageName, vacation.vacationId);
 
   // If vacation does not exist:
   if (result.affectedRows === 0) throw new ResourceNotFoundError(vacation.vacationId);
