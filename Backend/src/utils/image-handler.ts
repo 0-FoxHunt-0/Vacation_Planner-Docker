@@ -1,154 +1,98 @@
-import { UploadedFile } from "express-fileupload";
-import { v4 as uuidv4 } from "uuid";
+import { UploadedFile } from 'express-fileupload';
+import { v4 as uuid } from "uuid";
 import fsPromises from "fs/promises";
+import path from 'path';
 import fs from "fs";
-import dal from "./dal";
-import imagePaths from "../models/enum";
-import path from "path";
-// const productImagesFolder = "./src/assets/images/products/";
+import dal from './dal';
 
-async function saveImage(
-  image: UploadedFile,
-  imagePath: imagePaths
-): Promise<string> {
-  const uniqueImageUrl = createImageUrl(image.name);
+const productImagesFolder = "./src/assets/images/vacations/";
 
-  // Create unique image name
-  const absolutePath = imagePath + uniqueImageUrl;
+// Save new image: 
+async function saveImage(image: UploadedFile): Promise<string> {
+    
+    // Create unique image name: 
+    const uniqueImageName = createImageName(image.name);
 
-  // Save to disk
-  await image.mv(absolutePath); // mv = move
+    // Create absolute page: 
+    const absolutePath = productImagesFolder + uniqueImageName;
 
-  // Return new name
-  return uniqueImageUrl;
+    // Save to disk: 
+    await image.mv(absolutePath); // mv = move
+
+    // Return new name: 
+    return uniqueImageName;
 }
 
-function createImageUrl(originalImageUrl: string): string {
-  // Take original extension
-  const extension = originalImageUrl.substring(
-    originalImageUrl.lastIndexOf(".")
-  );
+// Update existing image:
+async function updateImage(image: UploadedFile, existingImageName: string): Promise<string> {
 
-  // Create unique name including original extension (v4 = 36 char uuid)
-  const uniqueImageUrl = uuidv4() + extension;
+    // Delete existing image: 
+    await deleteImage(existingImageName);
 
-  // Return unique image name
-  return uniqueImageUrl;
+    // Save new image to disk:
+    const uniqueImageName = await saveImage(image);
+
+    // Return unique name: 
+    return uniqueImageName;
 }
 
-async function updateImage(
-  image: UploadedFile,
-  existingImageUrl: string,
-  imagePath: imagePaths
-): Promise<string> {
-  // Save new image to disk
-  await deleteImage(existingImageUrl, imagePath);
+// Delete existing image:
+async function deleteImage(existingImageName: string): Promise<void> {
+    try {
+        
+        // If no image sent:
+        if(!existingImageName) return;
 
-  // Delete existing image
-  const uniqueImageUrl = await saveImage(image, imagePaths.vacations);
-
-  return uniqueImageUrl;
-}
-
-async function deleteImage(
-  existingImageUrl: string,
-  imagePath: imagePaths
-): Promise<void> {
-  try {
-    // If no image sent
-    if (!existingImageUrl) return;
-
-    // Delete image
-    await fsPromises.unlink(imagePath + existingImageUrl);
-  } catch (err: any) {
-    console.error(err.message);
-  }
+        // Delete image from disk:
+        await fsPromises.unlink(productImagesFolder + existingImageName);
+    }
+    catch(err: any) {
+        console.error(err.message);
+    }
 }
 
 async function getImageUrlFromDB(
-  id: number,
-  imagePath: imagePaths
-): Promise<string> {
-  if (imagePath === imagePaths.vacations) {
-    console.log('products')
-    const sql = `
-    SELECT imageUrl FROM products
-    WHERE ProductID = ${id}
-    `;
-    const products = await dal.execute(sql);
-    const product = products[0];
-
-    // If no such product:
-    if (!product) return null;
-
-    // Return image name
-    return product.imageUrl;
-  } else {
-    console.log('employees')
-    const sql = `
-      SELECT imageUrl FROM employees
-      WHERE EmployeeID = ${id}
+    id: number,
+  ): Promise<string> {
+      const sql = `
+      SELECT imageName FROM vacations
+      WHERE vacationId = ${id}
       `;
-    const employees = await dal.execute(sql);
-    const employee = employees[0];
-
-    // If no such product:
-    if (!employee) return null;
-
-    // Return image name
-    return employee.imageUrl;
+      const vacations = await dal.execute(sql);
+      const vacation = vacations[0];
+  
+      // If no such product:
+      if (!vacation) return null;
+  
+      // Return image name
+      return vacation.imageName;
   }
+
+function createImageName(originalImageName: string): string {
+
+    // Take original extension: 
+    const extension = originalImageName.substring(originalImageName.lastIndexOf("."));
+
+    // Create unique name including original extension (v4 = 36 chars uuid):
+    const uniqueImageName = uuid() + extension;
+
+    // Return unique name:
+    return uniqueImageName;
 }
 
-function getAbsoluteVacationsPath(imageUrl: string): string {
-  let absolutePath = path.join(
-    __dirname,
-    "..",
-    "assets",
-    "images",
-    "vacations",
-    imageUrl
-  );
-  if (!fs.existsSync(absolutePath)) {
-    absolutePath = path.join(
-      __dirname,
-      "..",
-      "assets",
-      "images",
-      "404-not-found",
-      "image-not-found.jpg"
-    );
-  }
-  return absolutePath;
-}
-
-function getAbsoluteEmployeesPath(imageUrl: string): string {
-  let absolutePath = path.join(
-    __dirname,
-    "..",
-    "assets",
-    "images",
-    "employees",
-    imageUrl
-  );
-  if (!fs.existsSync(absolutePath)) {
-    absolutePath = path.join(
-      __dirname,
-      "..",
-      "assets",
-      "images",
-      "404-not-found",
-      "image-not-found.jpg"
-    );
-  }
-  return absolutePath;
+function getAbsolutePath(imageName: string): string {
+    let absolutePath = path.join(__dirname, "..", "1-assets", "images", "products", imageName);
+    if(!fs.existsSync(absolutePath)) {
+        absolutePath = path.join(__dirname, "..", "1-assets", "images", "not-found.png");
+    }
+    return absolutePath;
 }
 
 export default {
-  getImageUrlFromDB,
-  saveImage,
-  updateImage,
-  deleteImage,
-  getAbsoluteVacationsPath,
-  getAbsoluteEmployeesPath,
+    saveImage,
+    updateImage,
+    deleteImage,
+    getAbsolutePath,
+    getImageUrlFromDB
 };
+

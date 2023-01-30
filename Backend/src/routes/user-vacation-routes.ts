@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 import verifyLoggedIn from "../middleware/verify-logged-in";
 import userVacationService from "../services/user-vacation-service";
 import cyber from "../utils/cyber";
+import imageHandler from "../utils/image-handler";
 
 const userRouter = express.Router(); // Capital R
 
@@ -46,6 +47,20 @@ userRouter.delete(
       const vacationId = +request.params.id;
       await userVacationService.unfollow(user.userId, vacationId)
       response.sendStatus(204)
+    } catch (err: any) {
+      next(err);
+    }
+  }
+);
+
+// GET http://localhost:4000/api/user/vacation/images/:imageName
+userRouter.get(
+  "/user/vacation/images/:imageName",
+  async (request: Request, response: Response, next: NextFunction) => {
+    try {
+      const imageName = request.params.imageName;
+      const absolutePath = imageHandler.getAbsolutePath(imageName)
+      response.sendFile(absolutePath)
     } catch (err: any) {
       next(err);
     }

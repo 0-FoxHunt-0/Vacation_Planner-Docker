@@ -1,7 +1,7 @@
 import { createObjectCsvWriter } from "csv-writer";
 import { OkPacket } from "mysql";
 import path from "path";
-import imagePaths from "../models/enum";
+import { ResourceNotFoundError } from "../models/client-errors";
 import VacationModel from "../models/vacation-model";
 import dal from "../utils/dal";
 import imageHandler from "../utils/image-handler";
@@ -24,7 +24,6 @@ async function addVacation(vacation: VacationModel): Promise<VacationModel> {
   // Save image to disk and get back its name
   vacation.imageName = await imageHandler.saveImage(
     vacation.image,
-    imagePaths.vacations
   );
 
   const sql = `INSERT INTO vacations VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)`;
@@ -33,13 +32,52 @@ async function addVacation(vacation: VacationModel): Promise<VacationModel> {
   const result: OkPacket = await dal.execute(
     sql,
     vacation.destination,
-    vacation.destination,
+    vacation.description,
     vacation.startDate,
     vacation.endDate,
     vacation.price,
     vacation.imageName
   );
   vacation.vacationId = result.insertId;
+
+  // Delete image file from vacation object:
+  delete vacation.image;
+
+  // Return data:
+  return vacation;
+}
+
+async function updateVacation(vacation: VacationModel): Promise<VacationModel> {
+  // Validate:
+  vacation.imageName = await imageHandler.getImageUrlFromDB(vacation.vacationId);
+
+  if (vacation.image) {
+    vacation.imageName = await imageHandler.updateImage(
+      vacation.image,
+      vacation.imageName
+    );
+  }
+
+  vacation.imageName = vacation.imageName
+    ? await imageHandler.updateImage(vacation.image, vacation.imageName)
+    : vacation.imageName;
+
+  const sql = `
+        UPDATE vacations
+        SET
+            destination = ?, 
+            description = ?, 
+            startDate = ?,
+            endDate = ?,
+            imageName = ?
+        WHERE vacationId = ?
+    `;
+
+  // Execute query:
+  const result: OkPacket = await dal.execute(sql, vacation.destination, vacation.description, vacation.startDate, vacation.endDate, vacation.imageName, vacation.vacationId);
+
+  // If vacation does not exist:
+  if (result.affectedRows === 0) throw new ResourceNotFoundError(vacation.vacationId);
 
   // Delete image file from vacation object:
   delete vacation.image;
@@ -80,6 +118,7 @@ export default {
   getAllVacationsForAdmin,
   getVacationById,
   addVacation,
+  updateVacation,
   deleteVacation,
   vacationStatisticsCSV,
 };

@@ -52,6 +52,22 @@ adminRouter.post(
   }
 );
 
+adminRouter.put(
+  "/admin/vacations/:id([0-9]+)",
+  verifyAdmin,
+  async (request: Request, response: Response, next: NextFunction) => {
+    try {
+      request.body.vacationId = +request.params.id;
+      request.body.image = request.files?.image;
+      const vacation = new VacationModel(request.body);
+      const updatedVacation = await adminVacationService.updateVacation(vacation);
+      response.json(updatedVacation);
+    } catch (err: any) {
+      next(err);
+    }
+  }
+);
+
 adminRouter.delete(
   "/admin/vacations",
   verifyAdmin,

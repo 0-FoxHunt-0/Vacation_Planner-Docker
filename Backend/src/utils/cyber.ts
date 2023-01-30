@@ -60,9 +60,6 @@ function verifyToken(request: Request): Promise<boolean> {
 
 async function verifyAdmin(request: Request): Promise<boolean> {
   await verifyToken(request);
-  // const header = request.header("authorization");
-  // const token = header.substring(7);
-  // const user: UserModel = (jwt.decode(token) as any).user;
   const user = getUserFromToken(request)
   return user.role === RoleModel.Admin;
 }
