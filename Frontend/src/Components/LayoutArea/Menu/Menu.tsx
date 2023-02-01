@@ -1,16 +1,29 @@
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import UserModel from "../../../Models/UserModel";
+import { authStore } from "../../../Redux/AuthState";
+import authService from "../../../Services/AuthServices";
 import "./Menu.css";
 
 function Menu(): JSX.Element {
+
+    const [user, setUser] = useState<UserModel>()
+
+    useEffect(() => {
+        setUser(authStore.getState().user)
+
+        // Listen to AuthState changes:
+        authStore.subscribe(() => {
+            setUser(authStore.getState().user)
+        })
+    }, [])
+
+    function logout(): void {
+        authService.logout();
+    }
+
     return (
         <div className="Menu">
-
-            {/* <NavLink to="/">🏠 Home</NavLink>
-            <span> | </span>
-            <NavLink to="/list">📃 List</NavLink>
-            <span> | </span>
-            <NavLink to="/add">➕ Add</NavLink> */}
-
             <nav className="navbar navbar-dark sticky-top navbar-expand-lg bg-dark">
                 <div className="container-fluid">
                     <a className="navbar-brand" href="#">VacationVortex</a>
@@ -67,24 +80,38 @@ function Menu(): JSX.Element {
                             </button>
                         </form>
 
-                        <ul className="navbar-nav">
-                            <li className="nav-item">
-                                <NavLink
-                                    className="nav-link auth-link"
-                                    to="/login"
-                                >
-                                    Login
-                                </NavLink>
-                            </li>
-                            <li className="nav-item">
-                                <NavLink
-                                    className="nav-link"
-                                    to="/register"
-                                >
-                                    Register
-                                </NavLink>
-                            </li>
-                        </ul>
+                        {!user &&
+                            <ul className="navbar-nav">
+                                <li className="nav-item">
+                                    <NavLink
+                                        className="nav-link auth-link"
+                                        to="/login"
+                                    >
+                                        Login
+                                    </NavLink>
+                                </li>
+                                <li className="nav-item">
+                                    <NavLink
+                                        className="nav-link"
+                                        to="/register"
+                                    >
+                                        Register
+                                    </NavLink>
+                                </li>
+                            </ul>
+                        }
+
+                        {user &&
+                            <>
+                                <span>Hello {user.firstName} {user.lastName}  </span>
+                                <ul className="navbar-nav">
+                                    <li className="nav-item">
+                                        <NavLink to="/" className={"btn btn-danger"} onClick={logout}>Logout</NavLink>
+                                    </li>
+                                </ul>
+                            </>
+                        }
+
                     </div>
                 </div>
             </nav>

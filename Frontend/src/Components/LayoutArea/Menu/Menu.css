@@ -2,19 +2,6 @@
     background-color: #000000;
     height: 100%;
 }
-/* 
-.Menu > a {
-    color: white;
-    text-decoration: none;
-}
-
-.Menu >a:hover {
-    color: lightgray;
-}
-
-.Menu > a:active {
-    color: gray;
-} */
 
 .Menu .navbar-brand {
     font-family: Buffalo;
@@ -36,11 +23,17 @@
     text-align: right;
 }
 
-.Menu #searchBar {
+.Menu #searchForm {
+    width: 70%;
     justify-self: center;
 }
 
-.Menu #searchForm {
-    width: 70%;
-    align-self: center;
+.Menu span {
+    margin-right: 15px;
+    margin-left: 15px;
+    color: white;
+}
+
+nav button {
+    margin-right: 20px;
 }

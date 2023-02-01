@@ -35,9 +35,9 @@ function Register(): JSX.Element {
                 <span className="Err">{formState.errors.lastName?.message}</span>
 
 
-                <label>Username:</label>
-                <input type="text" {...register("username", UserModel.usernameValidation)} />
-                <span className="Err">{formState.errors.username?.message}</span>
+                <label>Email:</label>
+                <input type="text" {...register("email", UserModel.emailValidation)} />
+                <span className="Err">{formState.errors.email?.message}</span>
 
                 <label>Password:</label>
                 <input type="password" {...register("password", UserModel.passwordValidation)} />

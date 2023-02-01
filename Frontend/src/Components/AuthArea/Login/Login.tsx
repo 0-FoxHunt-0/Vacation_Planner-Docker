@@ -14,7 +14,7 @@ function Login(): JSX.Element {
     async function send(credentials: CredentialsModel): Promise<void> {
         try {
             await authService.login(credentials);
-            notify.success(`Welcome back ${credentials.username}!`);
+            notify.success(`Welcome back ${credentials.email}!`);
             navigate("/");
         } catch (error: any) {
             notify.error(error)
@@ -28,9 +28,9 @@ function Login(): JSX.Element {
 
             <form onSubmit={handleSubmit(send)}>
 
-                <label>Username:</label>
-                <input type="text" {...register("username", CredentialsModel.usernameValidation)} />
-                <span className="Err">{formState.errors.username?.message}</span>
+                <label>Email:</label>
+                <input type="text" {...register("email", CredentialsModel.emailValidation)} />
+                <span className="Err">{formState.errors.email?.message}</span>
 
                 <label>Password:</label>
                 <input type="password" {...register("password", CredentialsModel.passwordValidation)} />

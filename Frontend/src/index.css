@@ -7,7 +7,14 @@ html, body, #root {
   color: black;
 }
 
-
+.Box {
+  display: inline-block;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px;
+}
 
 .MenuHr {
   margin-top: 0;

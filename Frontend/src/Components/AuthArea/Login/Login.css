@@ -1,3 +1,19 @@
 .Login {
 	
 }
+
+.Login form {
+  width: 350px;
+  text-align: left;
+}
+
+.Login form > input, .Login form > button {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  font-size: x-large;
+}
+
+.Login form > label {
+  font-size: x-large;
+}
