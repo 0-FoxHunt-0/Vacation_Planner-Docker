@@ -35,3 +35,12 @@
 .Menu .auth-link {
     text-align: right;
 }
+
+.Menu #searchBar {
+    justify-self: center;
+}
+
+.Menu #searchForm {
+    width: 70%;
+    align-self: center;
+}

@@ -1,0 +1,107 @@
+# Run docker-compose without stacking the terminal (-d = detached mode)
+# docker-compose up
+
+# Run docker-compose without stacking the terminal and rebuilding the image also if exists
+# docker compose up -d --build
+
+# All Services:
+services:
+  # vacationvortex Database (MySQL) service:
+  vacationvortex-database-service:
+    # What is the image name to build:
+    image: 1foxhunt1/vacationvortex-database-image:1.0
+
+    # Where is the Dockerfile describing that image:
+    build: ./Database
+
+    # What is the container name to create:
+    container_name: vacationvortex-database-container
+
+    # Enviroment Variables needed by MySQL
+    environment:
+      MYSQL_HOST: localhost # Internally for the container
+      MYSQL_DATABASE: vacation_planner
+      MYSQL_USER: Root
+      MYSQL_PASSWORD: RootAdmin1234
+      MYSQL_ROOT_PASSWORD: RootAdmin1234
+
+    # Port binding
+    ports:
+      - 3306:3306
+
+    # restart policy
+    restart: unless-stopped
+
+    # Database volume to container's /var/lib/mysql folder which contains MySQL data
+    volumes:
+      - vacationvortex:/var/lib/mysql
+
+  # ------------------------------------------------------------------------------------------------------------------------------ #
+
+  # vacationvortex REST API service:
+  vacationvortex-backend-service:
+    # What is the image name to build:
+    image: 1foxhunt1/vacationvortex-backend:1.0
+
+    # Where is the Dockerfile describing that image:
+    build: ./Backend
+
+    # What is the container name to create:
+    container_name: vacationvortex-backend-container
+
+    # Enviroment Variable
+    environment:
+      PORT: 4000
+      MYSQL_HOST: vacationvortex-database-service # The above database service is the network computer container name of the database container.
+      MYSQL_DATABASE: vacation_planner
+      MYSQL_USER: Root
+      MYSQL_PASSWORD: RootAdmin1234
+
+    # Port binding between host and container (host:container)
+    ports:
+      - 4000:4000
+
+    # If service crashes - what to do?
+    restart: unless-stopped
+
+    # Volumes
+    volumes:
+      # Host volume for hot-reloading
+      - ./Backend:/app
+
+    # On which service we're depending on (for starup order)
+    depends_on:
+      - vacationvortex-database-service
+
+# ------------------------------------------------------------------------------------------------------------------------------ #
+
+  # Vacationortex Frontend service:
+  vacationvortex-frontend-service:
+    # What is the image name to build:
+    image: 1foxhunt1/vacationvortex-frontend:1.0
+
+    # Where is the Dockerfile describing that image:
+    build: ./Frontend
+
+    # What is the container name to create:
+    container_name: vacationvortex-frontend-container
+
+    # Port binding between host and container (host:container)
+    ports:
+      - 3000:3000
+
+    # If service crashes - what to do?
+    restart: unless-stopped
+
+    # Volumes
+    volumes:
+      # Host volume for hot-reloading
+      - ./Frontend:/app
+
+    # On which service we're depending on (for starup order)
+    depends_on:
+      - vacationvortex-backend-service
+
+# The above list of all named volumes:
+volumes:
+  vacationvortex:

@@ -37,7 +37,7 @@ function Menu(): JSX.Element {
                                 </NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink  
+                                <NavLink
                                     className="nav-link"
                                     to="/list"
                                 >
@@ -45,34 +45,18 @@ function Menu(): JSX.Element {
                                 </NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink 
+                                <NavLink
                                     className="nav-link"
                                     to="/add"
                                 >
                                     Add
                                 </NavLink>
                             </li>
-                            <li className="nav-item">
-                                <NavLink 
-                                    className="nav-link auth-link"
-                                    to="/login"
-                                >
-                                    Login
-                                </NavLink>
-                            </li>
-                            <li className="nav-item">
-                                <NavLink 
-                                    className="nav-link"
-                                    to="/register"
-                                >
-                                    Register
-                                </NavLink>
-                            </li>
                         </ul>
                         <form className="d-flex" role="search" id="searchForm">
                             <div id="searchErrorsDiv"></div>
                             <input
-                                name="form-control me-2"
+                                className="form-control me-2"
                                 id="searchBar"
                                 type="search text"
                                 placeholder="Search"
@@ -82,6 +66,25 @@ function Menu(): JSX.Element {
                                 Search
                             </button>
                         </form>
+
+                        <ul className="navbar-nav">
+                            <li className="nav-item">
+                                <NavLink
+                                    className="nav-link auth-link"
+                                    to="/login"
+                                >
+                                    Login
+                                </NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink
+                                    className="nav-link"
+                                    to="/register"
+                                >
+                                    Register
+                                </NavLink>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </nav>

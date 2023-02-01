@@ -75,8 +75,6 @@ function getUserFromToken(request: Request): UserModel {
 // SHA - Secure Hashing Algorithm
 // HMAC - Hash based Message Authentication Code
 function hashPassword(plainText: string): string {
-  if (!plainText) return null;
-
   // Hashing without SALT:
   // const hashedPassword = crypto.createHash("sha512").update(plainText).digest("hex");
 

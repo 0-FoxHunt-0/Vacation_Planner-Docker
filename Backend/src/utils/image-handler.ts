@@ -62,7 +62,7 @@ async function getImageUrlFromDB(
       const vacation = vacations[0];
   
       // If no such product:
-      if (!vacation) return null;
+    //   if (!vacation) return null;
   
       // Return image name
       return vacation.imageName;

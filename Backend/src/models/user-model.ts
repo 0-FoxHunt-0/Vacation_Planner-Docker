@@ -24,7 +24,7 @@ class UserModel {
         id: Joi.number().forbidden(),
         firstName: Joi.string().required().min(2).max(20),
         lastName: Joi.string().required().min(2).max(20),
-        email: Joi.string().required().min(4).max(20),
+        email: Joi.string().required().min(4).max(20).email(),
         password: Joi.string().optional().min(4).max(20),
         role: Joi.string().forbidden()
     })
@@ -33,7 +33,7 @@ class UserModel {
         id: Joi.number().required().integer().positive(),
         firstName: Joi.string().required().min(2).max(20),
         lastName: Joi.string().required().min(2).max(20),
-        email: Joi.string().required().min(4).max(20),
+        email: Joi.string().required().min(4).max(20).email(),
         password: Joi.string().optional().min(4).max(20),
         role: Joi.string().forbidden()
     })

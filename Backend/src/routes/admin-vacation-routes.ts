@@ -83,7 +83,7 @@ adminRouter.delete(
 );
 
 adminRouter.get(
-  "/admin/csv-download",
+  "/admin/downloadable/csv-download",
   verifyAdmin,
   async (request: Request, response: Response, next: NextFunction) => {
     try {
