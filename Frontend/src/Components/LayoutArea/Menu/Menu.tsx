@@ -22,6 +22,19 @@ function Menu(): JSX.Element {
         authService.logout();
     }
 
+    function isLoggedIn(): boolean {
+        if (user) return true;
+        else return false;
+    }
+
+    function isAdmin(): boolean {
+
+        if (!user) return false
+
+        const response = authService.isAdmin();
+        return response
+    }
+
     return (
         <div className="Menu">
             <nav className="navbar navbar-dark sticky-top navbar-expand-lg bg-dark">
@@ -49,22 +62,28 @@ function Menu(): JSX.Element {
                                     Home
                                 </NavLink>
                             </li>
-                            <li className="nav-item">
-                                <NavLink
-                                    className="nav-link"
-                                    to="/list"
-                                >
-                                    List
-                                </NavLink>
-                            </li>
-                            <li className="nav-item">
-                                <NavLink
-                                    className="nav-link"
-                                    to="/add"
-                                >
-                                    Add
-                                </NavLink>
-                            </li>
+                            {isLoggedIn() &&
+                                <>
+                                    <li className="nav-item">
+                                        <NavLink
+                                            className="nav-link"
+                                            to="/list"
+                                        >
+                                            List
+                                        </NavLink>
+                                    </li>
+                                </>
+                            }
+                            {isAdmin() &&
+                                <li className="nav-item">
+                                    <NavLink
+                                        className="nav-link"
+                                        to="/add"
+                                    >
+                                        Add
+                                    </NavLink>
+                                </li>
+                            }
                         </ul>
                         <form className="d-flex" role="search" id="searchForm">
                             <div id="searchErrorsDiv"></div>

@@ -11,7 +11,6 @@ class Interceptors {
 
             // If user is logged in:
             if (authService.isLoggedIn()) {
-
                 // Add authorization header containing the string "Bearer the-token"
                 request.headers.authorization = "Bearer " + authStore.getState().token
             }

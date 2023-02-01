@@ -1,4 +1,5 @@
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 import CredentialsModel from "../Models/CredentialsModel";
 import UserModel from "../Models/UserModel";
 import { AuthActionType, authStore } from "../Redux/AuthState";
@@ -40,6 +41,14 @@ class AuthService {
   // Is user logged in:
   public isLoggedIn(): boolean {
     return authStore.getState().token !== null;
+  }
+
+  public isAdmin(): boolean {
+    const token = authStore.getState().token;
+    const decodedToken = jwtDecode<{ user: UserModel }>(token);
+    console.log(decodedToken);
+    if(decodedToken.user.role === "Admin") return true;
+    else return false
   }
 
 }

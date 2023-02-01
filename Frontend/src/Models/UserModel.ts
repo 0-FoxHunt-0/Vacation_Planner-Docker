@@ -6,6 +6,7 @@ class UserModel {
     public lastName: string;
     public email: string; // username and NOT userName!!!
     public password: string;
+    public role: string;
 
     public static firstNameValidation: RegisterOptions = {
         required: {value: true, message: "Please enter your first name" },
@@ -29,6 +30,10 @@ class UserModel {
         required: {value: true, message: "Please enter your password" },
         minLength: { value: 4, message: "Your password must be 4 chars or more!" },
         maxLength: { value: 30, message: "Your password must be 30 chars or less!" }
+    }
+
+    public static roleValidation: RegisterOptions = {
+        required: { value: false, message: "You are not allowed to enter your role"}
     }
 
 }

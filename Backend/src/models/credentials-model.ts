@@ -1,5 +1,6 @@
 import Joi from "joi";
 import { ValidationError } from "./client-errors";
+import RoleModel from "./role-model";
 
 class CredentialsModel {
 
