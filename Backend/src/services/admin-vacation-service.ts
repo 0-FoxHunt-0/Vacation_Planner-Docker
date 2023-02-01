@@ -21,6 +21,9 @@ async function getVacationById(id: number): Promise<VacationModel> {
 }
 
 async function addVacation(vacation: VacationModel): Promise<VacationModel> {
+  // Validate:
+  vacation.validatePost()
+
   // Save image to disk and get back its name
   vacation.imageName = await imageHandler.saveImage(
     vacation.image,
@@ -49,6 +52,8 @@ async function addVacation(vacation: VacationModel): Promise<VacationModel> {
 
 async function updateVacation(vacation: VacationModel): Promise<VacationModel> {
   // Validate:
+  vacation.validateUpdate()
+
   vacation.imageName = await imageHandler.getImageUrlFromDB(vacation.vacationId);
 
   if (vacation.image) {
