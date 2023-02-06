@@ -3,11 +3,12 @@ import { OkPacket } from "mysql";
 import path from "path";
 import { ResourceNotFoundError } from "../models/client-errors";
 import VacationModel from "../models/vacation-model";
+import appConfig from "../utils/app-config";
 import dal from "../utils/dal";
 import imageHandler from "../utils/image-handler";
 
 async function getAllVacationsForAdmin(): Promise<VacationModel[]> {
-  const sql = `SELECT * FROM vacations ORDER BY startDate`;
+  const sql = `SELECT *, CONCAT('${appConfig.imageAddress}', imageName) AS imageName FROM vacations ORDER BY startDate`;
   const vacations = await dal.execute(sql);
   return vacations;
 }

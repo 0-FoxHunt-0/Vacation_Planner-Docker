@@ -6,6 +6,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
+import interceptors from './Utils/Interceptor';
+
+// Create interceptors once:
+interceptors.create()
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

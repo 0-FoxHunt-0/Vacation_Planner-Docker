@@ -74,11 +74,11 @@ function Menu(): JSX.Element {
                                     </li>
                                 </>
                             }
-                            {isAdmin() &&
+                            {isLoggedIn() && isAdmin() &&
                                 <li className="nav-item">
                                     <NavLink
                                         className="nav-link"
-                                        to="/add"
+                                        to="/admin/add/vacations"
                                     >
                                         Add
                                     </NavLink>

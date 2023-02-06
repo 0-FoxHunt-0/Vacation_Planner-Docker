@@ -31,7 +31,7 @@ class VacationModel {
     endDate: Joi.date().required(),
     price: Joi.number().required().min(0).max(1000000000),
     image: Joi.object().required(),
-    imageName: Joi.string().optional().min(40).max(50)
+    imageName: Joi.string().optional(),
   });
 
   private static updateValidationSchema = Joi.object({
@@ -42,7 +42,7 @@ class VacationModel {
     endDate: Joi.date().required(),
     price: Joi.number().required().min(0).max(1000000000),
     image: Joi.object().required(),
-    imageName: Joi.string().optional()
+    imageName: Joi.string().forbidden()
   });
 
   public validatePost(): void {

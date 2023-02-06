@@ -35,12 +35,12 @@ export function authReducer(
   currentState = new AuthState(),
   action: AuthAction
 ): AuthState {
-  const newState = { ...currentState };
+  const newState = { ...currentState };  
 
   switch (action.type) {
     case AuthActionType.Register: // Here the payload is the token (string)
     case AuthActionType.Login:
-      newState.token = action.payload;
+      newState.token = action.payload;      
       const userContainer = jwtDecode<{ user: UserModel }>(newState.token);
       newState.user = userContainer.user;
       localStorage.setItem('userToken', newState.token)

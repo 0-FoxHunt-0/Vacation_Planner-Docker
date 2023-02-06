@@ -100,7 +100,7 @@ INSERT INTO `vacations` (`vacationId`, `destination`, `description`, `startDate`
 --
 ALTER TABLE `following`
   ADD PRIMARY KEY (`userId`,`vacationId`),
-  ADD KEY `vacationId` (`vacationId`);
+  ADD KEY (`vacationId`, `vacationId`);
 
 --
 -- Indexes for table `users`

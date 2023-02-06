@@ -46,7 +46,6 @@ class AuthService {
   public isAdmin(): boolean {
     const token = authStore.getState().token;
     const decodedToken = jwtDecode<{ user: UserModel }>(token);
-    console.log(decodedToken);
     if(decodedToken.user.role === "Admin") return true;
     else return false
   }

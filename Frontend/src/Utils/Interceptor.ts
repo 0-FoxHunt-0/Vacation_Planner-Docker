@@ -15,6 +15,9 @@ class Interceptors {
                 request.headers.authorization = "Bearer " + authStore.getState().token
             }
 
+            // console.log(request.headers.authorization);
+            
+
             return request
 
         })

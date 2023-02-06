@@ -5,7 +5,7 @@ import path from 'path';
 import fs from "fs";
 import dal from './dal';
 
-const productImagesFolder = "./src/assets/images/vacations/";
+const vacationImagesFolder = "./src/assets/images/vacations/";
 
 // Save new image: 
 async function saveImage(image: UploadedFile): Promise<string> {
@@ -14,7 +14,7 @@ async function saveImage(image: UploadedFile): Promise<string> {
     const uniqueImageName = createImageName(image.name);
 
     // Create absolute page: 
-    const absolutePath = productImagesFolder + uniqueImageName;
+    const absolutePath = vacationImagesFolder + uniqueImageName;
 
     // Save to disk: 
     await image.mv(absolutePath); // mv = move
@@ -44,7 +44,7 @@ async function deleteImage(existingImageName: string): Promise<void> {
         if(!existingImageName) return;
 
         // Delete image from disk:
-        await fsPromises.unlink(productImagesFolder + existingImageName);
+        await fsPromises.unlink(vacationImagesFolder + existingImageName);
     }
     catch(err: any) {
         console.error(err.message);
@@ -61,8 +61,8 @@ async function getImageUrlFromDB(
       const vacations = await dal.execute(sql);
       const vacation = vacations[0];
   
-      // If no such product:
-    //   if (!vacation) return null;
+    //   If no such product:
+      if (!vacation) return null;
   
       // Return image name
       return vacation.imageName;
@@ -81,9 +81,9 @@ function createImageName(originalImageName: string): string {
 }
 
 function getAbsolutePath(imageName: string): string {
-    let absolutePath = path.join(__dirname, "..", "1-assets", "images", "products", imageName);
+    let absolutePath = path.join(__dirname, "..", "assets", "images", "vacations", imageName);
     if(!fs.existsSync(absolutePath)) {
-        absolutePath = path.join(__dirname, "..", "1-assets", "images", "not-found.png");
+        absolutePath = path.join(__dirname, "..", "assets", "images", "not-found.png");
     }
     return absolutePath;
 }

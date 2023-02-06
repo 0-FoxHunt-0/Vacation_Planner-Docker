@@ -60,7 +60,7 @@ function verifyToken(request: Request): Promise<boolean> {
 
 async function verifyAdmin(request: Request): Promise<boolean> {
   await verifyToken(request);
-  const user = getUserFromToken(request)
+  const user = getUserFromToken(request)  
   return user.role === RoleModel.Admin;
 }
 

@@ -2,9 +2,11 @@ import { createObjectCsvWriter } from "csv-writer";
 import express, { Request, Response, NextFunction } from "express";
 import path, { dirname } from "path";
 import verifyAdmin from "../middleware/verify-admin";
+import verifyLoggedIn from "../middleware/verify-logged-in";
 import VacationModel from "../models/vacation-model";
 import adminVacationService from "../services/admin-vacation-service";
 import dal from "../utils/dal";
+import imageHandler from "../utils/image-handler";
 
 const adminRouter = express.Router(); // Capital R
 
@@ -14,7 +16,7 @@ adminRouter.get(
   verifyAdmin,
   async (request: Request, response: Response, next: NextFunction) => {
     try {
-      const vacations = await adminVacationService.getAllVacationsForAdmin();
+      const vacations = await adminVacationService.getAllVacationsForAdmin();      
       response.json(vacations);
     } catch (err: any) {
       next(err);
@@ -24,8 +26,22 @@ adminRouter.get(
 
 // GET http://localhost:4000/api/admin/vacations
 adminRouter.get(
+  "/admin/vacations/images/:imageName",
+  async (request: Request, response: Response, next: NextFunction) => {
+    try {
+      const imageName = request.params.imageName;
+      const absolutePath = imageHandler.getAbsolutePath(imageName);
+      response.sendFile(absolutePath);
+    } catch (err: any) {
+      next(err);
+    }
+  }
+);
+
+// GET http://localhost:4000/api/admin/vacations
+adminRouter.get(
   "/admin/vacations/:id([0-9]+)",
-  verifyAdmin,
+  verifyLoggedIn,
   async (request: Request, response: Response, next: NextFunction) => {
     try {
       const id = +request.params.id;
@@ -38,7 +54,7 @@ adminRouter.get(
 );
 
 adminRouter.post(
-  "/admin/vacations",
+  "/admin/add/vacations",
   verifyAdmin,
   async (request: Request, response: Response, next: NextFunction) => {
     try {
@@ -53,7 +69,7 @@ adminRouter.post(
 );
 
 adminRouter.put(
-  "/admin/vacations/:id([0-9]+)",
+  "/admin/edit/vacations/:id([0-9]+)",
   verifyAdmin,
   async (request: Request, response: Response, next: NextFunction) => {
     try {
@@ -69,11 +85,13 @@ adminRouter.put(
 );
 
 adminRouter.delete(
-  "/admin/vacations",
+  "/admin/vacations/:id([0-9]+)",
   verifyAdmin,
   async (request: Request, response: Response, next: NextFunction) => {
     try {
       const id = +request.params.id;
+      const existingImage = await imageHandler.getImageUrlFromDB(id);
+      await imageHandler.deleteImage(existingImage);
       await adminVacationService.deleteVacation(id);
       response.sendStatus(204);
     } catch (err: any) {

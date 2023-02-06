@@ -28,7 +28,7 @@ userRouter.post(
   async (request: Request, response: Response, next: NextFunction) => {
     try {
       const user = cyber.getUserFromToken(request)
-      const vacationId = +request.params.id;
+      const vacationId = +request.params.vacationId;
       await userVacationService.follow(user.userId, vacationId)
       response.sendStatus(201)
     } catch (err: any) {
@@ -44,7 +44,7 @@ userRouter.delete(
   async (request: Request, response: Response, next: NextFunction) => {
     try {
       const user = cyber.getUserFromToken(request)
-      const vacationId = +request.params.id;
+      const vacationId = +request.params.vacationId;
       await userVacationService.unfollow(user.userId, vacationId)
       response.sendStatus(204)
     } catch (err: any) {
