@@ -14,8 +14,6 @@ class AuthService {
     // Get the returned token:
     const token = response.data;
 
-    console.log(token)
-
     // Send token to global state:
     authStore.dispatch({ type: AuthActionType.Register, payload: token });
   }
@@ -27,7 +25,6 @@ class AuthService {
 
     // Get the returned token:
     const token = response.data;
-
 
     // Send token to global state:
     authStore.dispatch({ type: AuthActionType.Login, payload: token });

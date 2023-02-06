@@ -15,35 +15,38 @@ import "./VacationList.css";
 
 function VacationList(): JSX.Element {
 
+    const [user, setUser] = useState<UserModel>()
+
     const [vacations, setVacations] = useState<VacationModel[]>([])
 
-    const [user, setUser] = useState<UserModel>()
+    // Listen to AuthState changes:
+    authStore.subscribe(() => {
+        setUser(authStore.getState().user)
+    })
+
+    const vacationSubscription = vacationStore.subscribe(() => {
+        setVacations(vacationStore.getState().vacations)
+    })
 
     useEffect(() => {
         setUser(authStore.getState().user)
 
-        // Listen to AuthState changes:
-        authStore.subscribe(() => {
-            setUser(authStore.getState().user)
-        })
-
-        vacationStore.subscribe(() => {
-            setVacations(vacationStore.getState().vacations)
-        })
-
         if (authService.isAdmin()) {
             adminVacationsService.getAllVacationsAdmin()
-                .then(vacations => { setVacations(vacations) })
+                .then(vacations => { setVacations(vacations) },
+
+                )
                 .catch(err => { alert(err.msg) })
         }
 
         else {
             userVacationsService.getAllVacationsUser()
-                .then(vacations => { setVacations(vacations); })
+                .then(vacations => { setVacations(vacations) })
                 .catch(err => { alert(err.msg) })
         }
 
     }, [])
+
 
     async function deleteMe(vacationId: number) {
         try {
@@ -67,7 +70,10 @@ function VacationList(): JSX.Element {
 
     function isFollowing(vacationId: number): boolean {
         const vacation: VacationModel = vacations.find(v => v.vacationId === vacationId)
-        return vacation.isFollowing === 1 ? true : false
+        console.log(vacation);
+
+        if (vacation.isFollowing === 1) return true;
+        else return false;
     }
 
     async function followVacation(vacationId: number) {
@@ -93,20 +99,28 @@ function VacationList(): JSX.Element {
 
             {authService.isAdmin() &&
                 <div className="list">
-                    {vacations.map(v => <AdminVacationCard key={v.vacationId} vacation={v} deleteVacation={deleteMe} />)}
+                    {vacations.map(v => 
+                    <>
+                        <AdminVacationCard key={v.vacationId} vacation={v} deleteVacation={deleteMe} />
+                        {console.log(v)}
+                    </>)}
                 </div>
             }
 
             {!authService.isAdmin() &&
                 <div className="list">
-                    {vacations.map(v => 
-                        <UserVacationCard 
-                            key={v.vacationId} 
-                            vacation={v} 
-                            followVacation={followVacation} 
-                            unfollowVacation={unfollowVacation} 
-                            isFollowing={isFollowing} 
-                    />)}
+                    {vacations.map(v =>
+                    <>
+                        <UserVacationCard
+                            key={v.vacationId}
+                            vacation={v}
+                            followVacation={followVacation}
+                            unfollowVacation={unfollowVacation}
+                            isFollowing={isFollowing}
+                        />
+                        {console.log(v)}
+                    </>
+                        )}
                 </div>
             }
 

@@ -67,4 +67,18 @@ userRouter.get(
   }
 );
 
+// GET http://localhost:4000/api/admin/vacations
+userRouter.get(
+  "/user/vacations/images/:imageName",
+  async (request: Request, response: Response, next: NextFunction) => {
+    try {
+      const imageName = request.params.imageName;
+      const absolutePath = imageHandler.getAbsolutePath(imageName);
+      response.sendFile(absolutePath);
+    } catch (err: any) {
+      next(err);
+    }
+  }
+);
+
 export default userRouter;

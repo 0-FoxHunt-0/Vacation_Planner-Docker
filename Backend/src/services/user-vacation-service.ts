@@ -1,16 +1,16 @@
 import UserModel from "../models/user-model";
 import VacationModel from "../models/vacation-model";
+import appConfig from "../utils/app-config";
 import dal from "../utils/dal";
 
 async function getAllVacations(user: UserModel): Promise<VacationModel[]> {
-  //   const sql = `SELECT * FROM vacations`;
 
   const sql = `
       SELECT DISTINCT 
         V.*,
         EXISTS(SELECT * FROM following WHERE vacationId = F.vacationId AND userId = ?) AS isFollowing,
         COUNT(F.userId) AS followerCount,
-        imageName
+        CONCAT('${appConfig.userImageAddress}', imageName) AS imageName
       FROM vacations AS V LEFT JOIN following AS F
       ON V.vacationId = F.vacationId
       GROUP BY vacationId

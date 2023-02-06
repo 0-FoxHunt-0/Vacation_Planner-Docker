@@ -1,18 +1,18 @@
 import mysql from "mysql"
 import appConfig from "./app-config";
 
+const connection = mysql.createPool({
+    host: appConfig.mysqlHost,
+    user: appConfig.mysqlUser,
+    password: appConfig.mysqlPassword,
+    database: appConfig.mysqlDatabase
+});
 // const connection = mysql.createPool({
 //     host: process.env.MYSQL_HOST,
 //     user: process.env.MYSQL_USER,
 //     password: process.env.MYSQL_PASSWORD,
 //     database: process.env.MYSQL_DATABASE
 // });
-const connection = mysql.createPool({
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE
-});
 
 // Execute any sql query
 function execute(sql: string, ...values: any[]): Promise<any> {

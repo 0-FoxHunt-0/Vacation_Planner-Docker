@@ -8,7 +8,7 @@ import dal from "../utils/dal";
 import imageHandler from "../utils/image-handler";
 
 async function getAllVacationsForAdmin(): Promise<VacationModel[]> {
-  const sql = `SELECT *, CONCAT('${appConfig.imageAddress}', imageName) AS imageName FROM vacations ORDER BY startDate`;
+  const sql = `SELECT *, CONCAT('${appConfig.adminImageAddress}', imageName) AS imageName FROM vacations ORDER BY startDate`;
   const vacations = await dal.execute(sql);
   return vacations;
 }
@@ -30,7 +30,9 @@ async function addVacation(vacation: VacationModel): Promise<VacationModel> {
     vacation.image,
   );
 
-  const sql = `INSERT INTO vacations VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)`;
+  const sql = `INSERT INTO vacations 
+  (destination, description, startDate, endDate, price, imageName) 
+  VALUES (?, ?, ?, ?, ?, ?)`;
 
   // Execute query:
   const result: OkPacket = await dal.execute(

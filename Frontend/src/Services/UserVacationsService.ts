@@ -2,6 +2,7 @@ import axios from "axios";
 import VacationModel from "../Models/VacationModel";
 import { VacationsActionType, vacationStore } from "../Redux/VacationState";
 import appConfig from "../Utils/AppConfig";
+import notify from "../Utils/Notify";
 
 class UserVacationsService {
   public async getAllVacationsUser(): Promise<VacationModel[]> {
@@ -25,14 +26,24 @@ class UserVacationsService {
     return vacations;
   }
 
-  public async userFollow(id: number): Promise<void> {
-    await axios.post(appConfig.userVacationsFollowUrl + id);
-    vacationStore.dispatch({ type: VacationsActionType.UserFollow, payload: id });
+  public async userFollow(vacationId: number): Promise<void> {
+    try {
+      await axios.post(appConfig.userVacationsFollowUrl + vacationId);
+      notify.success("Followed")
+      vacationStore.dispatch({ type: VacationsActionType.UserFollow, payload: vacationId });
+    } catch (err: any) {
+      notify.error(err.message);
+    }
   }
 
-  public async userUnFollow(id: number): Promise<void> {
-    await axios.delete(appConfig.userVacationsFollowUrl + id);
-    vacationStore.dispatch({ type: VacationsActionType.UserFollow, payload: id });
+  public async userUnFollow(vacationId: number): Promise<void> {
+    try {
+      await axios.delete(appConfig.userVacationsUnFollowUrl + vacationId);
+      notify.success("Un-Followed")
+      vacationStore.dispatch({ type: VacationsActionType.UserUnFollow, payload: vacationId });
+    } catch (err: any) {
+      notify.error(err.message);
+    }
   }
 }
 

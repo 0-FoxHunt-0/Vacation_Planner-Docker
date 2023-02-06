@@ -8,7 +8,7 @@ interface VacationCardProps {
     isFollowing: (vacationId: number) => boolean;
 }
 
-function UserVacationCard(props: VacationCardProps): JSX.Element {
+function UserVacationCard(props: VacationCardProps): JSX.Element {    
 
     async function follow() {
         try {
@@ -28,14 +28,14 @@ function UserVacationCard(props: VacationCardProps): JSX.Element {
 
     return (
         <div className="VacationCard Box" style={{ backgroundImage: `url(${props.vacation.imageName})` }}>
-            
+
             <div>
 
                 <div>
                     {
-                        props.isFollowing(props.vacation.vacationId) === true ?
-                        <button className="btn btn-danger" onClick={() => follow()}>Follow ❤️</button> :
-                        <button className="btn btn-danger" onClick={() => unfollow()}>Un-Follow 💔</button>
+                        (props.isFollowing(props.vacation.vacationId)) === true ?
+                        <button className="btn btn-danger" onClick={() => unfollow()}>Un-Follow 💔</button> :
+                        <button className="btn btn-danger" onClick={() => follow()}>Follow ❤️</button>
                     }
                 </div>
 
