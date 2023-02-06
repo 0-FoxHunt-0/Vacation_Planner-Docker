@@ -28,7 +28,7 @@ function UserVacationCard(props: VacationCardProps): JSX.Element {
 
     return (
         <div className="VacationCard Box" style={{ backgroundImage: `url(${props.vacation.imageName})` }}>
-
+            
             <div>
 
                 <div>
