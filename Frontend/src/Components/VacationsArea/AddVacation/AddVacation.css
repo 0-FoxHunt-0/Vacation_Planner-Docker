@@ -1,3 +1,12 @@
-.AddProduct {
+.AddVacation {}
 
+.AddVacation form {
+    border: 2px solid white;
+    border-radius: 5px;
+    width: 500px;
+    text-align: left;
+    margin: 10px auto;
+    padding: 20px;
+    background-color: #FFFFFF;
+    color: black;
 }

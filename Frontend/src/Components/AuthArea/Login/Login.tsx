@@ -29,14 +29,14 @@ function Login(): JSX.Element {
             <form onSubmit={handleSubmit(send)}>
 
                 <label>Email:</label>
-                <input type="text" {...register("email", CredentialsModel.emailValidation)} />
+                <input className="form-control" type="text" {...register("email", CredentialsModel.emailValidation)} />
                 <span className="Err">{formState.errors.email?.message}</span>
 
                 <label>Password:</label>
-                <input type="password" {...register("password", CredentialsModel.passwordValidation)} />
+                <input className="form-control" type="password" {...register("password", CredentialsModel.passwordValidation)} />
                 <span className="Err">{formState.errors.password?.message}</span>
 
-                <button type="submit">Login</button>
+                <button className="btn btn-primary" type="submit">Login</button>
 
             </form>
 

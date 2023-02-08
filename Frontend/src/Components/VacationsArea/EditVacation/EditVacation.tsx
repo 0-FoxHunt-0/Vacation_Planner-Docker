@@ -19,6 +19,7 @@ function EditVacation(): JSX.Element {
     const params = useParams()
 
     const minDate = new Date();
+    const startDate = new Date()
 
     useEffect(() => {
         adminVacationsService.getVacationById(+params.id)
@@ -26,8 +27,12 @@ function EditVacation(): JSX.Element {
                 setValue("vacationId", vacation.vacationId)
                 setValue("destination", vacation.destination)
                 setValue("description", vacation.description)
-                setValue("startDate", vacation.startDate)
-                setValue("endDate", vacation.endDate)
+                const startDate = new Date(vacation.startDate)
+                const nextStartDate = new Date(startDate.setDate(startDate.getDate() + 1)).toISOString().slice(0, -14);
+                setValue("startDate", nextStartDate);
+                const endDate = new Date(vacation.endDate)
+                const nextEndDate = new Date(endDate.setDate(endDate.getDate() + 1)).toISOString().slice(0, -14);
+                setValue("endDate", nextEndDate);
                 setValue("price", vacation.price)
                 setVacation(vacation)
             }).catch((err) => {
@@ -38,12 +43,12 @@ function EditVacation(): JSX.Element {
     async function send(vacation: VacationModel) {
         try {
 
-            if(new Date(vacation.startDate).getDate() < minDate.getDate()) {
+            if (new Date(vacation.startDate).getDate() < minDate.getDate()) {
                 notify.error("Vacation start date cannot go back in time!")
                 return;
             }
 
-            else if(new Date(vacation.endDate).getDate() < new Date(vacation.startDate).getDate()) {
+            else if (new Date(vacation.endDate).getDate() < new Date(vacation.startDate).getDate()) {
                 notify.error("Vacation end date cannot go back in time!")
                 return;
             }
@@ -68,36 +73,40 @@ function EditVacation(): JSX.Element {
                 <input type="hidden" {...register("vacationId")} />
 
                 <label>Destination: </label>
-                <input type="text" {...register("destination", VacationModel.destinationValidation)} placeholder="Enter destination" />
+                <input type="text" className="form-control" {...register("destination", VacationModel.destinationValidation)} placeholder="Enter destination" />
                 <span className="Err">{formState.errors.destination?.message}</span>
                 <br /><br />
 
                 <label>Description: </label>
-                <input type="text" {...register("description", VacationModel.descriptionValidation)} placeholder="Enter description" />
+                <input type="text" className="form-control" {...register("description", VacationModel.descriptionValidation)} placeholder="Enter description" />
                 <span className="Err">{formState.errors.description?.message}</span>
                 <br /><br />
 
                 <label>Start Date: </label>
-                <input type="date" {...register("startDate", VacationModel.startDateValidation)} placeholder="Enter start date" min={minDate.toISOString().split("T")[0]} />
+                <input type="date" className="form-control" {...register("startDate", VacationModel.startDateValidation)} placeholder="Enter start date" min={minDate.toISOString().split("T")[0]} />
                 <span className="Err">{formState.errors.startDate?.message}</span>
                 <br /><br />
 
                 <label>End Date: </label>
-                <input type="date" {...register("endDate", VacationModel.endDateValidation)} placeholder="Enter end date" />
+                <input type="date" className="form-control" {...register("endDate", VacationModel.endDateValidation)} placeholder="Enter end date" />
                 <span className="Err">{formState.errors.endDate?.message}</span>
                 <br /><br />
 
                 <label>Price: </label>
-                <input type="number" step="0.01" {...register("price", VacationModel.priceValidation)} placeholder="Enter price" />
+                <input type="number" className="form-control" step="0.01" {...register("price", VacationModel.priceValidation)} placeholder="Enter price" />
                 <span className="Err">{formState.errors.price?.message}</span>
                 <br /><br />
 
                 <label>Image: </label>
-                <input type="file" accept="image/*" {...register("image")} />
+                <input type="file" className="form-control" accept="image/*" {...register("image")} />
+                <br /><br />
 
+                <label>Previous Image Preview:</label>
                 <img src={vacation?.imageName} alt="" />
 
-                <button type="submit">Update</button>
+                <br /><br />
+
+                <button type="submit" className="btn btn-warning">Update</button>
                 <br /><br />
 
             </form>

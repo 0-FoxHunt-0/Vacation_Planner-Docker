@@ -39,7 +39,7 @@ function Menu(): JSX.Element {
         <div className="Menu">
             <nav className="navbar navbar-dark sticky-top navbar-expand-lg bg-dark">
                 <div className="container-fluid">
-                    <a className="navbar-brand" href="#">VacationVortex</a>
+                    <NavLink className="navbar-brand" to="/">VacationVortex</NavLink>
                     <button
                         className="navbar-toggler"
                         type="button"
@@ -85,19 +85,6 @@ function Menu(): JSX.Element {
                                 </li>
                             }
                         </ul>
-                        <form className="d-flex" role="search" id="searchForm">
-                            <div id="searchErrorsDiv"></div>
-                            <input
-                                className="form-control me-2"
-                                id="searchBar"
-                                type="search text"
-                                placeholder="Search"
-                                aria-label="Search"
-                            />
-                            <button className="btn btn-outline-success" id="searchButton" type="submit">
-                                Search
-                            </button>
-                        </form>
 
                         {!user &&
                             <ul className="navbar-nav">

@@ -52,15 +52,14 @@ function UserVacationCard(props: VacationCardProps): JSX.Element {
 
     return (
         <div className="UserVacationCard VacationCard Box">
-            {/* VacationCard Box */}
             <CardActions sx={[{ position: "relative" }, { left: 10 }, { top: 70 }, { zIndex: 1 }]}>
                 {
                     isFollowing() === true ?
-                        <Fab color="error" aria-label="add" size='medium' onClick={() => unfollow()}>
-                            <ThumbUpIcon />
+                        <Fab color="error" aria-label="add" variant='extended' size='medium' onClick={() => unfollow()}>
+                            <ThumbUpIcon /> &nbsp; Like {props.vacation.followerCount}
                         </Fab> :
-                        <Fab color="default" aria-label="add" size='medium' onClick={() => follow()}>
-                            <ThumbUpIcon />
+                        <Fab color="default" aria-label="add" variant='extended' size='medium' onClick={() => follow()}>
+                            <ThumbUpIcon /> &nbsp; Like {props.vacation.followerCount}
                         </Fab>
                 }
 

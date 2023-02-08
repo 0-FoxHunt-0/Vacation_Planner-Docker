@@ -27,23 +27,23 @@ function Register(): JSX.Element {
             <form onSubmit={handleSubmit(send)}>
 
                 <label>First Name:</label>
-                <input type="text" {...register("firstName", UserModel.firstNameValidation)} />
+                <input className="form-control" type="text" {...register("firstName", UserModel.firstNameValidation)} />
                 <span className="Err">{formState.errors.firstName?.message}</span>
 
                 <label>Last Name:</label>
-                <input type="text" {...register("lastName", UserModel.lastNameValidation)} />
+                <input className="form-control" type="text" {...register("lastName", UserModel.lastNameValidation)} />
                 <span className="Err">{formState.errors.lastName?.message}</span>
 
 
                 <label>Email:</label>
-                <input type="text" {...register("email", UserModel.emailValidation)} />
+                <input className="form-control" type="text" {...register("email", UserModel.emailValidation)} />
                 <span className="Err">{formState.errors.email?.message}</span>
 
                 <label>Password:</label>
-                <input type="password" {...register("password", UserModel.passwordValidation)} />
+                <input className="form-control" type="password" {...register("password", UserModel.passwordValidation)} />
                 <span className="Err">{formState.errors.password?.message}</span>
 
-                <button type="submit">Register</button>
+                <button className="btn btn-primary" type="submit">Register</button>
 
             </form>
 
