@@ -15,6 +15,8 @@ class AdminVacationsService {
         appConfig.adminVacationsUrl
       );
       vacations = response.data;
+      console.log(vacations);
+      
 
       // Send all vacations into redux global state which will call the Reducer
       vacationStore.dispatch({

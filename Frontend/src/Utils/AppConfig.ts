@@ -13,7 +13,7 @@ class AppConfig {
     public adminAddVacationUrl = "http://localhost:4000/api/admin/add/vacations/"
     public adminDeleteVacationUrl = "http://localhost:4000/api/admin/vacations/"
     public adminCSVUrl = "http://localhost:4000/api/admin/downloadable/csv-download/"
-    public adminUpdateVacationUrl = "http://localhost:4000/api/admin/vacations/"
+    public adminUpdateVacationUrl = "http://localhost:4000/api/admin/edit/vacations/"
     public adminVacationByIdUrl = "http://localhost:4000/api/admin/vacations/"
     public adminVacationImageUrl = "http://localhost:4000/api/admin/vacations/images/"
 

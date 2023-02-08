@@ -1,13 +1,16 @@
 .Home {
+    height: 25vh;
     width: 100%;
-    height: 100%;
-	display: flex;
-    flex-direction: row;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
-.Home div:nth-child(1) {
+.Home .HomeParagraph {
 	width: 75%;
     align-items: center;
     text-align: center;
+    overflow: hidden;
 }

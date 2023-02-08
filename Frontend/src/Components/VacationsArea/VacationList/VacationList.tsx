@@ -1,9 +1,9 @@
+import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
 import UserModel from "../../../Models/UserModel";
 import VacationModel from "../../../Models/VacationModel";
 import { authStore } from "../../../Redux/AuthState";
-import { VacationsActionType, vacationStore } from "../../../Redux/VacationState";
+import { vacationStore } from "../../../Redux/VacationState";
 import adminVacationsService from "../../../Services/AdminVacationsService";
 import authService from "../../../Services/AuthServices";
 import userVacationsService from "../../../Services/UserVacationsService";
@@ -19,23 +19,13 @@ function VacationList(): JSX.Element {
 
     const [vacations, setVacations] = useState<VacationModel[]>([])
 
-    // Listen to AuthState changes:
-    authStore.subscribe(() => {
-        setUser(authStore.getState().user)
-    })
-
-    const vacationSubscription = vacationStore.subscribe(() => {
-        setVacations(vacationStore.getState().vacations)
-    })
-
     useEffect(() => {
         setUser(authStore.getState().user)
 
+
         if (authService.isAdmin()) {
             adminVacationsService.getAllVacationsAdmin()
-                .then(vacations => { setVacations(vacations) },
-
-                )
+                .then(vacations => { setVacations(vacations) })
                 .catch(err => { alert(err.msg) })
         }
 
@@ -44,6 +34,12 @@ function VacationList(): JSX.Element {
                 .then(vacations => { setVacations(vacations) })
                 .catch(err => { alert(err.msg) })
         }
+
+        vacationStore.subscribe(() => {
+            const vacationState = vacationStore.getState().vacations;
+            const duppedVacations = [...vacationState]
+            setVacations(duppedVacations)
+        })
 
     }, [])
 
@@ -61,7 +57,6 @@ function VacationList(): JSX.Element {
             const index = duplicatedVacations.findIndex(v => v.vacationId === vacationId)
             duplicatedVacations.splice(index, 1);
             setVacations(duplicatedVacations)
-            vacationStore.dispatch({ type: VacationsActionType.DeleteVacation, payload: duplicatedVacations })
 
         } catch (err: any) {
             notify.error(err)
@@ -69,8 +64,10 @@ function VacationList(): JSX.Element {
     }
 
     function isFollowing(vacationId: number): boolean {
-        const vacation: VacationModel = vacations.find(v => v.vacationId === vacationId)
-        console.log(vacation);
+
+        let vacations = vacationStore.getState().vacations
+
+        let vacation = vacations.find(v => v.vacationId === vacationId)
 
         if (vacation.isFollowing === 1) return true;
         else return false;
@@ -98,30 +95,29 @@ function VacationList(): JSX.Element {
             {vacations.length === 0 && <Spinner />}
 
             {authService.isAdmin() &&
-                <div className="list">
-                    {vacations.map(v => 
-                    <>
-                        <AdminVacationCard key={v.vacationId} vacation={v} deleteVacation={deleteMe} />
-                        {console.log(v)}
-                    </>)}
-                </div>
+                <Grid container>
+                    {vacations.map(v =>
+                        <Grid item xs display="flex" justifyContent="center" alignItems="center">
+                            <AdminVacationCard key={v.startDate} vacation={v} deleteVacation={deleteMe} />
+                        </Grid>
+                    )}
+                </Grid>
             }
 
             {!authService.isAdmin() &&
-                <div className="list">
+                <Grid container>
                     {vacations.map(v =>
-                    <>
-                        <UserVacationCard
-                            key={v.vacationId}
-                            vacation={v}
-                            followVacation={followVacation}
-                            unfollowVacation={unfollowVacation}
-                            isFollowing={isFollowing}
-                        />
-                        {console.log(v)}
-                    </>
-                        )}
-                </div>
+                        <Grid item xs display="flex" justifyContent="center" alignItems="center">
+                            <UserVacationCard
+                                key={v.vacationId}
+                                vacation={v}
+                                followVacation={followVacation}
+                                unfollowVacation={unfollowVacation}
+                                isFollowing={isFollowing}
+                            />
+                        </Grid>
+                    )}
+                </Grid>
             }
 
         </div>

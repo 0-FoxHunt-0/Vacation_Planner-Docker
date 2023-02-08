@@ -1,7 +1,6 @@
-.ProductList > a {
-    position: absolute;
-    right: 40px;
-    top: 105px;
-    text-decoration: none;
-    transform: scale(2);
-}
+/* .VacationList {
+    display: grid;
+    grid-template-columns: repeat(1fr, 4);
+    grid-template-rows: 25% 25% 25% 25%;
+    overflow: auto;
+} */

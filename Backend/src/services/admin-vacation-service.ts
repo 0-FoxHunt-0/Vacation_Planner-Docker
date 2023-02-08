@@ -46,6 +46,8 @@ async function addVacation(vacation: VacationModel): Promise<VacationModel> {
   );
   vacation.vacationId = result.insertId;
 
+  vacation.imageName = appConfig.adminImageAddress + vacation.imageName
+
   // Delete image file from vacation object:
   delete vacation.image;
 
@@ -87,6 +89,9 @@ async function updateVacation(vacation: VacationModel): Promise<VacationModel> {
 
   // If vacation does not exist:
   if (result.affectedRows === 0) throw new ResourceNotFoundError(vacation.vacationId);
+
+  // Return image url to Frontend
+  vacation.imageName = appConfig.adminImageAddress + vacation.imageName
 
   // Delete image file from vacation object:
   delete vacation.image;

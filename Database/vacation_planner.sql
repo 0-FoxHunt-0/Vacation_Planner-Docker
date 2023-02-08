@@ -3,13 +3,14 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 01, 2023 at 02:26 PM
+-- Generation Time: Feb 07, 2023 at 01:11 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -38,9 +39,7 @@ CREATE TABLE `following` (
 --
 
 INSERT INTO `following` (`userId`, `vacationId`) VALUES
-(4, 1),
-(6, 1),
-(6, 3);
+(7, 9);
 
 -- --------------------------------------------------------
 
@@ -62,9 +61,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userId`, `firstName`, `lastName`, `email`, `password`, `role`) VALUES
-(4, 'Lisa', 'Simpson', 'lisasimpson@gmail.com', '339b8488648d95faff55567f7bb2500e46118bf9576957d54bbf1cf2914c4cba4ac89752913dd2dad4f40222a8d622267806f3fb6828319b08fa335c61d9d651', 'User'),
 (5, 'admin', '', 'admin@gmail.com', '1fd495b22b55b313a881035c7e2691fa459ffa27da98c5e124d57cf9b68635dd5d0a7ba7d0137eb0079d8e7bad984776f1db8f0036b959bbca58ba0c7311f082', 'Admin'),
-(6, 'Bart', 'Simpson', 'bartsimpson@gmail.com', '38951409dbffcbf054887646d02ca7c9d24280e47399026cf35fdaffa7eabfcc3a72b020cb739686d19e71d2ffd27d4e78f7ae198e55912747c2481d1d0aedd9', 'User');
+(7, 'Nate', 'Stahlberg', 'nate@gmail.com', '2e6a4d846e23b9721b7dc52743e3c36a7aa69ca5568fa09b53701853e3ce7b853765c90497e5b6a48b6636d0d051f3cec76a1fd77acf2583a4f61f47e44f93fc', 'User'),
+(8, 'Nete', 'games', 'nategames15@gmail.com', 'dd6ff49baeb6802c954201a4216f690810451a9991247ebe7fd62556bc68218071c7e27de059fecde889215a9a5c17f30d8c87f03c339818fbaa61ca18cd756b', 'User');
 
 -- --------------------------------------------------------
 
@@ -87,8 +86,17 @@ CREATE TABLE `vacations` (
 --
 
 INSERT INTO `vacations` (`vacationId`, `destination`, `description`, `startDate`, `endDate`, `price`, `imageName`) VALUES
-(1, 'Rome', 'Some Description....', '2023-01-30', '2023-01-31', '2000.00', '1a8a0bea-56f4-427b-a73f-a00ee5e871cf.jpg'),
-(3, 'Paris', 'Paris', '2023-02-01', '2023-03-01', '1500.00', 'cebe9841-f4e8-49ce-aaa0-4e7fa765cd45.jpg');
+(9, 'Bali, Indonesia', 'Bali is a tropical paradise known for its lush jungles, vibrant culture, and pristine beaches. Explore the ancient temples, relax in a traditional Balinese spa, and experience the local cuisine.', '2023-03-10', '2023-03-17', '2500.00', 'ff9d1611-5bb5-476a-acd0-f1b6a765db8c.jpg'),
+(10, 'Venice, Italy', 'Venice is a charming city built on water, known for its historic canals, stunning architecture, and delicious food. Explore the iconic St. Mark\'s Square, take a gondola ride, and sample the local seafood.', '2023-07-20', '2023-07-27', '3000.00', 'fb6ecb6f-7fbd-4bd2-a508-12b82671fb37.jpg'),
+(11, 'Cancun, Mexico', 'Cancun is a lively resort town known for its pristine beaches, turquoise waters, and vibrant nightlife. Relax on the beach, snorkel in the coral reefs, and party the night away.', '2023-11-15', '2023-11-22', '1800.00', 'affa4194-09b8-4055-a3b5-d7059e52f043.jpg'),
+(12, 'Honolulu, Hawaii', 'Honolulu is the capital of Hawaii and a hub for beach lovers, surfers, and adventurers. Soak up the sun on Waikiki Beach, hike Diamond Head, and experience Hawaiian culture.', '2023-04-05', '2023-04-12', '3500.00', 'd45d1cff-35da-4c58-9a5d-88e7dff3ccab.jpg'),
+(13, 'Paris, France', 'Paris is the city of love, known for its iconic landmarks, world-class cuisine, and rich cultural heritage. Explore the Eiffel Tower, stroll along the Seine, and sample the local pastries.', '2023-08-10', '2023-08-17', '3200.00', 'd1ae6b0a-dcba-4992-a854-f43b265fe039.jpg'),
+(14, 'Amsterdam, Netherlands', 'Amsterdam is a charming city known for its vibrant culture, historic canals, and world-famous museums. Explore the Van Gogh Museum, take a bike tour, and sample the local cheese.', '2023-12-15', '2023-12-22', '2700.00', 'f3bba325-88bc-46ae-a189-60a3012a6a5b.jpg'),
+(15, 'Rio de Janeiro, Brazil', 'Rio de Janeiro is a lively city known for its stunning beaches, vibrant nightlife, and iconic landmarks. Relax on Copacabana Beach, visit Christ the Redeemer, and sample the local cuisine.', '2024-01-10', '2024-01-17', '2300.00', '71b35329-4e66-4460-ba8b-9718fefeef8a.jpg'),
+(16, 'Maui, Hawaii', 'Maui is an idyllic Hawaiian island with beautiful beaches, vibrant culture, and breathtaking natural beauty. Hike through lush jungles, watch the sunrise from the top of Haleakala, and learn about Hawaiian history and traditions.', '2023-07-15', '2023-07-22', '3000.00', 'dbc63667-ae0a-4494-95aa-eaa65d3cf690.jpg'),
+(17, 'Phuket, Thailand', 'Phuket is a tropical island in Thailand with stunning beaches, lush jungles, and rich culture. Snorkel in the Andaman Sea, explore ancient temples, and indulge in local cuisine.', '2023-08-01', '2023-08-01', '2500.00', '05c8df0c-ec8f-4c06-9760-b4ce639841e3.jpg'),
+(18, 'New York City, USA', 'New York City is a bustling metropolis with a rich cultural heritage, world-class museums, and iconic landmarks. Explore Central Park, visit the Metropolitan Museum of Art, and catch a Broadway show.', '2023-12-01', '2023-12-01', '2500.00', '974cf369-10d1-4c56-a036-ca55395664d5.jpg'),
+(19, 'Barcelona, Spain', 'Barcelona is a city of art, architecture, and history, with stunning buildings, museums, and beaches. Visit the Sagrada Familia, stroll along La Rambla, and relax on the Barceloneta Beach.', '2024-05-01', '2024-05-01', '2500.00', '5980d01f-afe1-49a7-824a-84d2a1753d6c.jpg');
 
 --
 -- Indexes for dumped tables
@@ -99,7 +107,7 @@ INSERT INTO `vacations` (`vacationId`, `destination`, `description`, `startDate`
 --
 ALTER TABLE `following`
   ADD PRIMARY KEY (`userId`,`vacationId`),
-  ADD KEY (`vacationId`, `vacationId`);
+  ADD KEY `vacationId` (`vacationId`);
 
 --
 -- Indexes for table `users`
@@ -121,13 +129,13 @@ ALTER TABLE `vacations`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `vacations`
 --
 ALTER TABLE `vacations`
-  MODIFY `vacationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `vacationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Constraints for dumped tables

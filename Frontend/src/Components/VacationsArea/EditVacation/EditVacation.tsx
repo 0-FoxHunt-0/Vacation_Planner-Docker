@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import VacationModel from "../../../Models/VacationModel";
 import adminVacationsService from "../../../Services/AdminVacationsService";
 import appConfig from "../../../Utils/AppConfig";
+import notify from "../../../Utils/Notify";
 import Spinner from "../../SharedArea/Spinner/Spinner";
 import "./EditVacation.css";
 
@@ -17,10 +18,11 @@ function EditVacation(): JSX.Element {
 
     const params = useParams()
 
+    const minDate = new Date();
+
     useEffect(() => {
         adminVacationsService.getVacationById(+params.id)
             .then((vacation) => {
-                console.log(vacation)
                 setValue("vacationId", vacation.vacationId)
                 setValue("destination", vacation.destination)
                 setValue("description", vacation.description)
@@ -35,12 +37,25 @@ function EditVacation(): JSX.Element {
 
     async function send(vacation: VacationModel) {
         try {
+
+            if(new Date(vacation.startDate).getDate() < minDate.getDate()) {
+                notify.error("Vacation start date cannot go back in time!")
+                return;
+            }
+
+            else if(new Date(vacation.endDate).getDate() < new Date(vacation.startDate).getDate()) {
+                notify.error("Vacation end date cannot go back in time!")
+                return;
+            }
+
             vacation.image = (vacation.image as unknown as FileList)[0]
             await adminVacationsService.updateVacation(vacation);
-            alert("Vacation has been updated");
-            navigate(-1)
+            notify.success("Vacation has been updated");
+            navigate("/list")
         }
-        catch (err: any) { }
+        catch (err: any) {
+            notify.error(err);
+        }
     }
 
     return (
@@ -63,7 +78,7 @@ function EditVacation(): JSX.Element {
                 <br /><br />
 
                 <label>Start Date: </label>
-                <input type="date" {...register("startDate", VacationModel.startDateValidation)} placeholder="Enter start date" />
+                <input type="date" {...register("startDate", VacationModel.startDateValidation)} placeholder="Enter start date" min={minDate.toISOString().split("T")[0]} />
                 <span className="Err">{formState.errors.startDate?.message}</span>
                 <br /><br />
 

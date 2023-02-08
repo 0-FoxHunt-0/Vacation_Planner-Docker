@@ -5,17 +5,18 @@ html, body, #root {
   font-size: large;
   background-image: linear-gradient(to bottom right, #FDD07A ,#FFFFFF);
   color: black;
+  overflow: auto;
 }
 
 .Box {
   display: inline-block;
   margin: 10px;
-  padding: 10px;
-  border: 1px solid;
-  border-radius: 10px;
-  box-shadow: 2px 2px 5px;
 }
 
 .MenuHr {
   margin-top: 0;
+}
+
+.HeaderHr {
+  margin-bottom: 0;
 }

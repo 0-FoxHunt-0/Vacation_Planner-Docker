@@ -15,7 +15,7 @@ export enum VacationsActionType {
   UpdateVacation = "UpdateVacation",
   DeleteVacation = "DeleteVacation",
   UserFollow = "UserFollow",
-  UserUnFollow = "UserUnFollow"
+  UserUnFollow = "UserUnFollow",
 }
 
 // 3. Action - a single object describing single operation on the data:
@@ -37,41 +37,46 @@ export function vacationsReducer(
     case VacationsActionType.FetchVacations: // Here the payload is the Vacation list fetched by the server
       newState.vacations = action.payload;
       break;
-      
-      case VacationsActionType.AddVacation: // Here the payload is the added Vacation
+
+    case VacationsActionType.AddVacation: // Here the payload is the added Vacation
       newState.vacations.push(action.payload);
       break;
-      
-      case VacationsActionType.UpdateVacation:
-        const indexToUpdate = newState.vacations.findIndex(v => v.vacationId === action.payload.vacationId)
-        if (indexToUpdate !== -1) {
-            newState.vacations[indexToUpdate] = action.payload;
-        }
+
+    case VacationsActionType.UpdateVacation:
+      const indexToUpdate = newState.vacations.findIndex(
+        (v) => v.vacationId === action.payload.vacationId
+      );
+      if (indexToUpdate !== -1) {
+        newState.vacations[indexToUpdate] = action.payload;
+      }
       break;
 
     case VacationsActionType.DeleteVacation: // here the payload is the ID of the Vacation to delete
-      const indexToDelete = newState.vacations.findIndex(v => v.vacationId === action.payload.vacationId)
+      const indexToDelete = newState.vacations.findIndex(
+        (v) => v.vacationId === action.payload.vacationId
+      );
       if (indexToDelete !== -1) {
         newState.vacations.splice(indexToDelete, 1);
       }
       break;
 
     case VacationsActionType.UserFollow:
-      const vacationFollowing: VacationModel = newState.vacations.find(v => v.vacationId === action.payload);
-      if(vacationFollowing.isFollowing === 0)
-        vacationFollowing.isFollowing = 1;
+      const vacationFollowing: VacationModel = newState.vacations.find(
+        (v) => v.vacationId === action.payload
+      );
+      vacationFollowing.isFollowing = 1;
+      vacationFollowing.followerCount += 1;
       break;
 
     case VacationsActionType.UserUnFollow:
-      const vacationUnFollowing: VacationModel = newState.vacations.find(v => v.vacationId === action.payload);
-      if(vacationUnFollowing.isFollowing === 1)
-        vacationUnFollowing.isFollowing = 0;
+      const vacationUnFollowing: VacationModel = newState.vacations.find(
+        (v) => v.vacationId === action.payload
+      );
+      vacationUnFollowing.isFollowing = 0;
+      vacationUnFollowing.followerCount--;
       break;
-
-    }
+  }
   return newState;
 }
-
 // 5. Store - Redux manager:
-
 export const vacationStore = createStore(vacationsReducer);

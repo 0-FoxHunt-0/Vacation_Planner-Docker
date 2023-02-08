@@ -17,7 +17,7 @@ function Layout(): JSX.Element {
                 <Header />
             </header>
 
-            <hr />
+            <hr className="HeaderHr" />
 
             <main>
                 <Routing />

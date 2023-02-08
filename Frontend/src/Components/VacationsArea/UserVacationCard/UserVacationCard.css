@@ -1,18 +1,14 @@
-.ProductCard {
-    width: 300px;
-    display: inline-flex;
-    background-image: linear-gradient(45deg, #1A2238, #9DAAF2);
-    text-align: left;
+ .UserVacationCard {
+    width: 500px;
 }
 
-.ProductCard img {
-    width: 60px;
-    height: 60px;
-    border: 1px solid black;
-    border-radius: 10px;
-    vertical-align: middle;
+/* .UserVacationCard .imageAndFollow {
+    background-size: cover;
+    background-position: center;
+    height: 200px;
+    border-radius: 7px;
 }
 
-.ProductCard > div:last-child {
-    margin-left: auto;
-}
+.UserVacationCard .followButton {
+    margin: 5px
+} */

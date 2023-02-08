@@ -11,12 +11,25 @@ function AddVacation(): JSX.Element {
 
     const navigate = useNavigate()
 
+    const minDate = new Date();
+
     async function send(vacation: VacationModel) {
         try {
+
+            if(new Date(vacation.startDate).getDate() < minDate.getDate()) {
+                notify.error("Vacation start date cannot go back in time!")
+                return;
+            }
+
+            else if(new Date(vacation.endDate).getDate() < new Date(vacation.startDate).getDate()) {
+                notify.error("Vacation end date cannot go back in time!")
+                return;
+            }
+
             vacation.image = (vacation.image as unknown as FileList)[0]
             await adminVacationsService.addVacation(vacation);
             notify.success("Vacation has been added successfully!");
-            navigate("/list")
+            navigate(-1)
         }
         catch (err: any) {}
     }
@@ -39,7 +52,7 @@ function AddVacation(): JSX.Element {
                 <br /><br />
 
                 <label>Start Date: </label>
-                <input type="date" { ...register("startDate", VacationModel.startDateValidation)} placeholder="Enter start date"/>
+                <input type="date" { ...register("startDate", VacationModel.startDateValidation)} placeholder="Enter start date" min={minDate.toISOString().split("T")[0]}/>
                 <span className="Err">{formState.errors.startDate?.message}</span>
                 <br /><br />
 

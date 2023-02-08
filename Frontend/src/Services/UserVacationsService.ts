@@ -32,10 +32,10 @@ class UserVacationsService {
       notify.success("Followed")
       vacationStore.dispatch({ type: VacationsActionType.UserFollow, payload: vacationId });
     } catch (err: any) {
-      notify.error(err.message);
+      notify.error(err.message);      
     }
   }
-
+  
   public async userUnFollow(vacationId: number): Promise<void> {
     try {
       await axios.delete(appConfig.userVacationsUnFollowUrl + vacationId);
