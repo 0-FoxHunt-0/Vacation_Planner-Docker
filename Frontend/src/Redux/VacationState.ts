@@ -16,6 +16,7 @@ export enum VacationsActionType {
   DeleteVacation = "DeleteVacation",
   UserFollow = "UserFollow",
   UserUnFollow = "UserUnFollow",
+  UserFilterFollowing = "UserFilterFollowing",
 }
 
 // 3. Action - a single object describing single operation on the data:
@@ -40,6 +41,7 @@ export function vacationsReducer(
 
     case VacationsActionType.AddVacation: // Here the payload is the added Vacation
       newState.vacations.push(action.payload);
+      newState.vacations.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
       break;
 
     case VacationsActionType.UpdateVacation:
@@ -48,6 +50,7 @@ export function vacationsReducer(
       );
       if (indexToUpdate !== -1) {
         newState.vacations[indexToUpdate] = action.payload;
+        newState.vacations.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
       }
       break;
 

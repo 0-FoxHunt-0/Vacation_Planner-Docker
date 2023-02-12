@@ -51,7 +51,7 @@ function UserVacationCard(props: VacationCardProps): JSX.Element {
     }
 
     return (
-        <div className="UserVacationCard VacationCard Box">
+        <div className="UserVacationCard VacationCard Box" id={props.vacation.vacationId.toString()}>
             <CardActions sx={[{ position: "relative" }, { left: 10 }, { top: 70 }, { zIndex: 1 }]}>
                 {
                     isFollowing() === true ?
@@ -89,32 +89,6 @@ function UserVacationCard(props: VacationCardProps): JSX.Element {
                     </Typography>
                 </CardContent>
             </Card>
-
-            {/* <div>
-
-                <div className="imageAndFollow" style={{ backgroundImage: `url(${props.vacation.imageName})` }}>
-                    <div>
-                        {
-                            props.isFollowing(props.vacation.vacationId) === true ?
-                                <button className="btn btn-danger followButton" onClick={() => unfollow()}>Un-Follow 💔</button> :
-                                <button className="btn btn-danger followButton" onClick={() => follow()}>Follow ❤️</button>
-                        }
-                    </div>
-                </div>
-
-
-
-                Destination: {props.vacation.destination}
-                <br />
-                Description: {props.vacation.description}
-                <br />
-                Start Date: {props.vacation.startDate}
-                <br />
-                End Date: {props.vacation.endDate}
-                <br />
-                Price: {props.vacation.price}
-            </div> */}
-
         </div>
     );
 }

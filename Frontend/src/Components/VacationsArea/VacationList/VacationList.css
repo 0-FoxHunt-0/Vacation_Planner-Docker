@@ -1,6 +1,7 @@
-/* .VacationList {
-    display: grid;
-    grid-template-columns: repeat(1fr, 4);
-    grid-template-rows: 25% 25% 25% 25%;
-    overflow: auto;
-} */
+.VacationList {
+    
+}
+
+.VacationList .show {
+    
+}

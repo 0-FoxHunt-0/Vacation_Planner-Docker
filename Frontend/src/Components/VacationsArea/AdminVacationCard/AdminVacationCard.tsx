@@ -26,7 +26,7 @@ function AdminVacationCard(props: VacationCardProps): JSX.Element {
     }
 
     return (
-        <div className="VacationCard Box">
+        <div className="VacationCard Box" id={props.vacation.vacationId.toString()}>
 
             <CardActions sx={[{ position: "relative" }, { left: 10 }, { top: 70 }, { zIndex: 1 }]}>
                 <NavLink to={"/admin/edit/vacations/" + props.vacation.vacationId}>
@@ -44,7 +44,7 @@ function AdminVacationCard(props: VacationCardProps): JSX.Element {
                 </Button>
             </CardActions>
 
-            <Card sx={[{ maxWidth: 500 }, { minWidth: 500 }, { minHeight: 480 }, { maxHeight: 480 }, { overflow: "hidden" }, { zIndex: 0 }]}>
+            <Card id={props.vacation.vacationId.toString()} sx={[{ maxWidth: 500 }, { minWidth: 500 }, { minHeight: 480 }, { maxHeight: 480 }, { overflow: "hidden" }, { zIndex: 0 }]}>
 
                 <CardMedia
                     component="img"

@@ -3,7 +3,7 @@ import "./Header.css";
 function Header(): JSX.Element {
     return (
         <div className="Header">
-			<h1>VacationVortex</h1>
+			<h1 id="mainHeader">EscapeHub</h1>
         </div>
     );
 }
