@@ -1,13 +1,18 @@
+import axios from "axios";
 import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import UserModel from "../../../Models/UserModel";
+import VacationModel from "../../../Models/VacationModel";
 import { authStore } from "../../../Redux/AuthState";
 import authService from "../../../Services/AuthServices";
+import appConfig from "../../../Utils/AppConfig";
+import CsvDownload from "../CsvDownload/CsvDownload";
 import "./Menu.css";
 
 function Menu(): JSX.Element {
 
     const [user, setUser] = useState<UserModel>()
+    const navigate = useNavigate()
 
     useEffect(() => {
         setUser(authStore.getState().user)
@@ -27,10 +32,13 @@ function Menu(): JSX.Element {
         else return false;
     }
 
+    async function getCSV() {
+        await axios.get(appConfig.adminCSVUrl);
+        navigate("/")
+    }
+
     function isAdmin(): boolean {
-
         if (!user) return false
-
         const response = authService.isAdmin();
         return response
     }
@@ -75,14 +83,27 @@ function Menu(): JSX.Element {
                                 </>
                             }
                             {isLoggedIn() && isAdmin() &&
-                                <li className="nav-item">
-                                    <NavLink
-                                        className="nav-link"
-                                        to="/admin/add/vacations"
-                                    >
-                                        Add
-                                    </NavLink>
-                                </li>
+                                <>
+                                    <li className="nav-item">
+                                        <NavLink
+                                            className="nav-link"
+                                            to="/admin/add/vacations"
+                                        >
+                                            Add
+                                        </NavLink>
+                                    </li>
+                                    <li className="nav-item">
+                                        <NavLink
+                                            className="nav-link"
+                                            to="/admin/add/vacations"
+                                        >
+                                            Statistics
+                                        </NavLink>
+                                    </li>
+                                    <li className="nav-item">
+                                        <CsvDownload></CsvDownload>
+                                    </li>
+                                </>
                             }
                         </ul>
 

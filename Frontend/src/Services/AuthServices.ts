@@ -3,6 +3,7 @@ import jwtDecode from "jwt-decode";
 import CredentialsModel from "../Models/CredentialsModel";
 import UserModel from "../Models/UserModel";
 import { AuthActionType, authStore } from "../Redux/AuthState";
+import { VacationsActionType, vacationStore } from "../Redux/VacationState";
 import appConfig from "../Utils/AppConfig";
 
 class AuthService {
@@ -32,6 +33,10 @@ class AuthService {
 
   // Logout
   public logout(): void {
+    vacationStore.dispatch({
+      type: VacationsActionType.FetchVacations,
+      payload: [],
+    });
     authStore.dispatch({ type: AuthActionType.Logout });
   }
 
@@ -42,10 +47,9 @@ class AuthService {
 
   public isAdmin(): boolean {
     const user = authStore.getState().user;
-    if(user.role === "Admin") return true;
-    else return false
+    if (user.role === "Admin") return true;
+    else return false;
   }
-
 }
 
 const authService = new AuthService();

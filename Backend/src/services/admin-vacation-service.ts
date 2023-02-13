@@ -109,7 +109,7 @@ async function deleteVacation(id: number): Promise<void> {
 async function vacationStatisticsCSV(): Promise<void> {
   const sql = `
     SELECT 
-      V.destinaiton AS Destination, 
+      V.destination AS Destination, 
       COUNT(F.userId) AS followerCount 
     FROM vacations AS V LEFT JOIN following AS F ON V.vacationId = F.vacationId
     GROUP BY Destination;

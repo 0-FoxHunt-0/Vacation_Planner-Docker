@@ -32,3 +32,8 @@
 nav button {
     margin-right: 20px;
 }
+
+.Menu button {
+    background-color: transparent;
+    border: none;
+}
