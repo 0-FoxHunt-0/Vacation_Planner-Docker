@@ -8,7 +8,8 @@ import dal from "../utils/dal";
 import imageHandler from "../utils/image-handler";
 
 async function getAllVacationsForAdmin(): Promise<VacationModel[]> {
-  const sql = `SELECT *, CONCAT('${appConfig.adminImageAddress}', imageName) AS imageName FROM vacations ORDER BY startDate`;
+  const sql = `SELECT V.*, CONCAT('${appConfig.adminImageAddress}', imageName) AS imageName, COUNT(F.userId) AS followerCount
+  FROM vacations AS V LEFT JOIN following AS F ON V.vacationId = F.vacationId GROUP BY V.vacationId ORDER BY startDate`;
   const vacations = await dal.execute(sql);
   return vacations;
 }

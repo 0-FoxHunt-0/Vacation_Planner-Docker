@@ -6,7 +6,7 @@ import VacationModel from "../../../Models/VacationModel";
 import { authStore } from "../../../Redux/AuthState";
 import authService from "../../../Services/AuthServices";
 import appConfig from "../../../Utils/AppConfig";
-import CsvDownload from "../CsvDownload/CsvDownload";
+import CsvDownload from "../../VacationsArea/CsvDownload/CsvDownload";
 import "./Menu.css";
 
 function Menu(): JSX.Element {
@@ -95,7 +95,7 @@ function Menu(): JSX.Element {
                                     <li className="nav-item">
                                         <NavLink
                                             className="nav-link"
-                                            to="/admin/add/vacations"
+                                            to="/admin/statistics"
                                         >
                                             Statistics
                                         </NavLink>
