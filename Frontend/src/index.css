@@ -6,6 +6,7 @@ html, body, #root {
   background-image: linear-gradient(to bottom right, #1D2228, #363c44, #E1E2E2);
   color: white;
   overflow: auto;
+  box-sizing: border-box;
 }
 
 .Box {

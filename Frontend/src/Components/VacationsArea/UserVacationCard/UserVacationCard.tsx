@@ -64,8 +64,7 @@ function UserVacationCard(props: VacationCardProps): JSX.Element {
                 }
 
             </CardActions>
-            <Card sx={[{ maxWidth: 500 }, { minWidth: 500 }, { minHeight: 480 }, { maxHeight: 480 }, { overflow: "hidden" }, { zIndex: 0 }]}>
-
+            <Card id={props.vacation.vacationId.toString()} className='card' sx={[{ maxWidth: 500, minWidth: 350, minHeight: 480, maxHeight: 480}]}>
                 <CardMedia
                     component="img"
                     alt={props.vacation.destination}

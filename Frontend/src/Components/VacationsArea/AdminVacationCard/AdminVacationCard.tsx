@@ -44,7 +44,7 @@ function AdminVacationCard(props: VacationCardProps): JSX.Element {
                 </Button>
             </CardActions>
 
-            <Card id={props.vacation.vacationId.toString()} sx={[{ maxWidth: 500 }, { minWidth: 500 }, { minHeight: 480 }, { maxHeight: 480 }, { overflow: "hidden" }, { zIndex: 0 }]}>
+            <Card className="card" id={props.vacation.vacationId.toString()} sx={[{ maxWidth: 500 }, { minWidth: 370 }, { minHeight: 480 }, { maxHeight: 480 }, { overflow: "hidden" }, { zIndex: 0 }]}>
 
                 <CardMedia
                     component="img"
@@ -69,32 +69,7 @@ function AdminVacationCard(props: VacationCardProps): JSX.Element {
                     </Typography>
                 </CardContent>
             </Card>
-
-            {/* <div className="VacationInfo">
-                {props.vacation.destination}
-                <br />
-                Description: {props.vacation.description}
-                <br />
-                Start Date: {props.vacation.startDate}
-                <br />
-                End Date: {props.vacation.endDate}
-                <br />
-                Price: {props.vacation.price}
-            </div>
-
-            <div className="VacationButtons">
-                <span className="adminEdit">
-                    <NavLink to={"/admin/edit/vacations/" + props.vacation.vacationId}>
-                        <button className="btn btn-warning">Edit</button>
-                    </NavLink>
-                </span>
-
-                &nbsp;
-
-                <span className="adminDelete">
-                    <button className="btn btn-danger" onClick={() => deleteMe()}>Delete</button>
-                </span>
-            </div> */}
+            
         </div>
     );
 }

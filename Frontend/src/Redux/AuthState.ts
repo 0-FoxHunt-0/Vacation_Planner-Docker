@@ -8,7 +8,7 @@ export class AuthState {
 
   // Load back the token from local storage if it exists:
   public constructor() {
-    this.token = localStorage.getItem("userToken")
+    this.token = sessionStorage.getItem("userToken")
     if (this.token) {
       const userContainer = jwtDecode<{ user: UserModel }>(this.token);
       this.user = userContainer.user;
@@ -43,13 +43,13 @@ export function authReducer(
       newState.token = action.payload;      
       const userContainer = jwtDecode<{ user: UserModel }>(newState.token);
       newState.user = userContainer.user;
-      localStorage.setItem('userToken', newState.token)
+      sessionStorage.setItem('userToken', newState.token)
       break;
 
     case AuthActionType.Logout:
       newState.token = null;
       newState.user = null;
-      localStorage.removeItem('userToken');
+      sessionStorage.removeItem('userToken');
       break;
   }
 
