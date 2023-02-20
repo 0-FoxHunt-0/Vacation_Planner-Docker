@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 07, 2023 at 01:11 AM
+-- Generation Time: Feb 20, 2023 at 11:35 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -39,7 +39,17 @@ CREATE TABLE `following` (
 --
 
 INSERT INTO `following` (`userId`, `vacationId`) VALUES
-(7, 9);
+(7, 13),
+(7, 14),
+(7, 16),
+(7, 17),
+(7, 18),
+(8, 9),
+(8, 10),
+(8, 13),
+(8, 15),
+(8, 18),
+(8, 19);
 
 -- --------------------------------------------------------
 
@@ -135,7 +145,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `vacations`
 --
 ALTER TABLE `vacations`
-  MODIFY `vacationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `vacationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- Constraints for dumped tables
