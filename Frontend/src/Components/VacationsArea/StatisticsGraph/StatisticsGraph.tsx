@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react';
-import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts';
 import VacationModel from '../../../Models/VacationModel';
 import { vacationStore } from '../../../Redux/VacationState';
 import adminVacationsService from '../../../Services/AdminVacationsService';
@@ -56,10 +56,9 @@ function StatisticsGraph(): JSX.Element {
                     }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" interval={0} angle={-45} textAnchor="end" />
+                    <XAxis dataKey="name" interval={0} angle={-45} textAnchor="end" tick={{ fill: "#FFFFFF" }} />
                     <YAxis />
                     <Tooltip content={customTooltip} />
-                    <Legend />
                     <Bar dataKey="likes" fill="#8884d8" />
                 </BarChart>
             </div>
