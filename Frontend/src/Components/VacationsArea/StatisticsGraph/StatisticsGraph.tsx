@@ -59,7 +59,7 @@ function StatisticsGraph(): JSX.Element {
                     <XAxis dataKey="name" interval={0} angle={-45} textAnchor="end" tick={{ fill: "#FFFFFF" }} />
                     <YAxis />
                     <Tooltip content={customTooltip} />
-                    <Bar dataKey="likes" fill="#8884d8" />
+                    <Bar dataKey="likes" fill="#FFE08C" />
                 </BarChart>
             </div>
         </div>

@@ -19,7 +19,6 @@ function EditVacation(): JSX.Element {
     const params = useParams()
 
     const minDate = new Date();
-    const startDate = new Date()
 
     useEffect(() => {
         adminVacationsService.getVacationById(+params.id)
@@ -75,31 +74,33 @@ function EditVacation(): JSX.Element {
                 <label>Destination: </label>
                 <input type="text" className="form-control" {...register("destination", VacationModel.destinationValidation)} placeholder="Enter destination" />
                 <span className="Err">{formState.errors.destination?.message}</span>
-                <br /><br />
+                <br />
 
-                <label>Description: </label>
-                <input type="text" className="form-control" {...register("description", VacationModel.descriptionValidation)} placeholder="Enter description" />
-                <span className="Err">{formState.errors.description?.message}</span>
-                <br /><br />
+                <label>Description:</label>
+                <div className="input-group">
+                    <textarea className="form-control" aria-label="With textarea"  {...register("description", VacationModel.descriptionValidation)} placeholder="Enter description"></textarea>
+                    <span className="Err">{formState.errors.description?.message}</span>
+                </div>
+                <br />
 
                 <label>Start Date: </label>
                 <input type="date" className="form-control" {...register("startDate", VacationModel.startDateValidation)} placeholder="Enter start date" min={minDate.toISOString().split("T")[0]} />
                 <span className="Err">{formState.errors.startDate?.message}</span>
-                <br /><br />
+                <br />
 
                 <label>End Date: </label>
                 <input type="date" className="form-control" {...register("endDate", VacationModel.endDateValidation)} placeholder="Enter end date" />
                 <span className="Err">{formState.errors.endDate?.message}</span>
-                <br /><br />
+                <br />
 
                 <label>Price: </label>
                 <input type="number" className="form-control" step="0.01" {...register("price", VacationModel.priceValidation)} placeholder="Enter price" />
                 <span className="Err">{formState.errors.price?.message}</span>
-                <br /><br />
+                <br />
 
                 <label>Image: </label>
                 <input type="file" className="form-control" accept="image/*" {...register("image")} />
-                <br /><br />
+                <br />
 
                 <label>Previous Image Preview:</label>
                 <img src={vacation?.imageName} alt="" />
@@ -107,7 +108,6 @@ function EditVacation(): JSX.Element {
                 <br /><br />
 
                 <button type="submit" className="btn btn-warning">Update</button>
-                <br /><br />
 
             </form>
 
