@@ -9,13 +9,13 @@ import "./AdminVacationCard.css";
 
 interface VacationCardProps {
     vacation: VacationModel;
-    deleteVacation: (vacationId: number) => Promise<void>;
+    deleteVacation: (vacationId: number) => void;
 }
 
 function AdminVacationCard(props: VacationCardProps): JSX.Element {
     async function deleteMe() {
         try {
-            await props.deleteVacation(props.vacation.vacationId)
+            props.deleteVacation(props.vacation.vacationId)
         } catch (error: any) {
             alert(error.message);
         }

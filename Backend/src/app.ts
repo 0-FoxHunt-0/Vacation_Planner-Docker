@@ -22,5 +22,5 @@ server.use("/api", userVacationRoutes)
 server.use(routeNotFound);
 server.use(catchAll);
 
-// server.listen(process.env.PORT, () => console.log(`Pegasus is listening on port http://localhost:${process.env.PORT}`));
-server.listen(appConfig.port, () => console.log(`Pegasus is listening on port http://localhost:${appConfig.port}`));
+server.listen(process.env.PORT, () => console.log(`Pegasus is listening on port http://localhost:${process.env.PORT}`));
+// server.listen(appConfig.port, () => console.log(`Pegasus is listening on port http://localhost:${appConfig.port}`));

@@ -1,5 +1,5 @@
-import { Button, ButtonGroup, Checkbox, FormControlLabel, FormGroup, Grid, Typography } from "@mui/material";
-import { ChangeEvent, useEffect, useState } from "react";
+import { Grid } from "@mui/material";
+import { useEffect, useState } from "react";
 import UserModel from "../../../Models/UserModel";
 import VacationModel from "../../../Models/VacationModel";
 import { authStore } from "../../../Redux/AuthState";
@@ -75,15 +75,14 @@ function VacationList(): JSX.Element {
             let duplicatedVacations = [...vacations];
             const index = duplicatedVacations.findIndex(v => v.vacationId === vacationId)
             duplicatedVacations.splice(index, 1);
-            setVacations(duplicatedVacations)
-
+            setVacations(duplicatedVacations);
+            
         } catch (err: any) {
             notify.error(err)
         }
     }
 
     // Following actions
-
     function isFollowing(vacationId: number): boolean {
         let vacation = vacations.find(v => v.vacationId === vacationId)
 

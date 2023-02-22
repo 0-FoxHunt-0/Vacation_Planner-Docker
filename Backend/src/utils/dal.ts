@@ -1,12 +1,6 @@
 import mysql from "mysql"
 import appConfig from "./app-config";
 
-// const connection = mysql.createPool({
-//     host: appConfig.mysqlHost,
-//     user: appConfig.mysqlUser,
-//     password: appConfig.mysqlPassword,
-//     database: appConfig.mysqlDatabase
-// });
 const connection = mysql.createPool({
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
