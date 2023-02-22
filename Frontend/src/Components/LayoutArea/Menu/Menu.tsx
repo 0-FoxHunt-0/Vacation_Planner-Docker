@@ -32,11 +32,6 @@ function Menu(): JSX.Element {
         else return false;
     }
 
-    async function getCSV() {
-        await axios.get(appConfig.adminCSVUrl);
-        navigate("/")
-    }
-
     function isAdmin(): boolean {
         if (!user) return false
         const response = authService.isAdmin();
