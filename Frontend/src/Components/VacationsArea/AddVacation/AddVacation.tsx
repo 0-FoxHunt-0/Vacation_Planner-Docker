@@ -39,7 +39,7 @@ function AddVacation(): JSX.Element {
 
             <h2>Add Vacation</h2>
 
-            <form className="" onSubmit={handleSubmit(send)}>
+            <form onSubmit={handleSubmit(send)}>
 
                 <label>Destination: </label>
                 <input type="text" {...register("destination", VacationModel.destinationValidation)} className="form-control" placeholder="Enter destination" />

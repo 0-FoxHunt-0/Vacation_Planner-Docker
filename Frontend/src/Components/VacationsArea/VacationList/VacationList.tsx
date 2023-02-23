@@ -188,7 +188,7 @@ function VacationList(): JSX.Element {
             {authService.isAdmin() &&
                 <Grid container>
                     {postArr.map(v =>
-                        <Grid item xs display="flex" justifyContent="center" alignItems="center" key={v.startDate} >
+                        <Grid item xs display="flex" justifyContent="center" alignItems="center" key={v.vacationId} >
                             <AdminVacationCard vacation={v} deleteVacation={deleteMe} />
                         </Grid>
                     )}
