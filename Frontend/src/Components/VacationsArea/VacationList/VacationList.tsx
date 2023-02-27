@@ -1,5 +1,6 @@
 import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import UserModel from "../../../Models/UserModel";
 import VacationModel from "../../../Models/VacationModel";
 import { authStore } from "../../../Redux/AuthState";
@@ -27,33 +28,44 @@ function VacationList(): JSX.Element {
     const [tempIsFollowingFilterState, setTempIsFollowingFilterState] = useState<VacationModel[]>([])
     const [tempInProgressFilterState, setTempInProgressFilterState] = useState<VacationModel[]>([])
     const [tempYetToStartFilterState, setTempYetToStartFilterState] = useState<VacationModel[]>([])
+    const navigate = useNavigate()
 
     useEffect(() => {
 
-        const header = document.getElementById("mainHeader")
-        header.innerText = "Vacation Listing"
+        try {
+            if (!sessionStorage.getItem("userToken")) {
+                notify.error("You are not logged in")
+                navigate("/")
+                return;
+            }
 
-        authStore.subscribe(() => {
-            const authState = authStore.getState().user
-            const duppedAuth = { ...authState }
-            setUser(duppedAuth)
-        })
-
-        vacationStore.subscribe(() => {
-            const vacationState = vacationStore.getState().vacations;
-            const duppedVacations = [...vacationState]
-            setVacations(duppedVacations)
-        })
-
-        {
-            authService.isAdmin() ?
-                adminVacationsService.getAllVacationsAdmin()
-                    .then(vacations => { setVacations(vacations) })
-                    .catch(err => { alert(err.msg) }) :
-
-                userVacationsService.getAllVacationsUser()
-                    .then(vacations => { setVacations(vacations) })
-                    .catch(err => { alert(err.msg) })
+            const header = document.getElementById("mainHeader")
+            header.innerText = "Vacation Listing"
+    
+            authStore.subscribe(() => {
+                const authState = authStore.getState().user
+                const duppedAuth = { ...authState }
+                setUser(duppedAuth)
+            })
+    
+            vacationStore.subscribe(() => {
+                const vacationState = vacationStore.getState().vacations;
+                const duppedVacations = [...vacationState]
+                setVacations(duppedVacations)
+            })
+    
+            {
+                authService.isAdmin() ?
+                    adminVacationsService.getAllVacationsAdmin()
+                        .then(vacations => { setVacations(vacations) })
+                        .catch(err => { alert(err.msg) }) :
+    
+                    userVacationsService.getAllVacationsUser()
+                        .then(vacations => { setVacations(vacations) })
+                        .catch(err => { alert(err.msg) })
+            }
+        } catch (error: any) {
+            notify.error(error)
         }
 
     }, [])
@@ -75,14 +87,14 @@ function VacationList(): JSX.Element {
             let duplicatedVacations = [...vacations];
             const index = duplicatedVacations.findIndex(v => v.vacationId === vacationId)
             duplicatedVacations.splice(index, 1);
-            setVacations(duplicatedVacations);
-            
+            setVacations(duplicatedVacations)
         } catch (err: any) {
             notify.error(err)
         }
     }
 
     // Following actions
+
     function isFollowing(vacationId: number): boolean {
         let vacation = vacations.find(v => v.vacationId === vacationId)
 
@@ -113,7 +125,7 @@ function VacationList(): JSX.Element {
             setTempIsFollowingFilterState(vacations)
             const filterResults = vacations.filter(v => v.isFollowing === 1)
             if (filterResults.length === 0) {
-                notify.error("You are not following any vacations")
+                notify.error("No vacations are followed with current filters")
                 setIsFollowingCheck(false)
                 return;
             }
@@ -125,7 +137,6 @@ function VacationList(): JSX.Element {
                 userVacationsService.vacationFiltering([])
                 setVacations([])
             }
-            console.log(vacationStore.getState().vacations)
             await userVacationsService.getAllVacationsUser()
                 .then(v => setVacations(v))
                 .catch(err => notify.error(err))
@@ -137,7 +148,7 @@ function VacationList(): JSX.Element {
             setTempInProgressFilterState(vacations)
             const filterResults = vacations.filter(v => (new Date(v.startDate) <= currentDate) && (new Date(v.endDate) >= currentDate))
             if (filterResults.length === 0) {
-                notify.error("There are no vacations in progress")
+                notify.error("No vacations are in progress with current filters")
                 setInProgressCheck(false)
                 return;
             }
@@ -149,7 +160,6 @@ function VacationList(): JSX.Element {
                 userVacationsService.vacationFiltering([])
                 setVacations([])
             }
-            console.log(vacationStore.getState().vacations)
             await userVacationsService.getAllVacationsUser()
                 .then(v => setVacations(v))
                 .catch(err => notify.error(err))
@@ -161,7 +171,7 @@ function VacationList(): JSX.Element {
             setTempYetToStartFilterState(vacations)
             const filterResults = vacations.filter(v => (new Date(v.startDate) > currentDate))
             if (filterResults.length === 0) {
-                notify.error("There are no vacations that have yet to start")
+                notify.error("No vacations are yet to start with current filters")
                 setInProgressCheck(false)
                 return;
             }
@@ -173,7 +183,6 @@ function VacationList(): JSX.Element {
                 userVacationsService.vacationFiltering([])
                 setVacations([])
             }
-            console.log(vacationStore.getState().vacations)
             await userVacationsService.getAllVacationsUser()
                 .then(v => setVacations(v))
                 .catch(err => notify.error(err))
@@ -188,7 +197,7 @@ function VacationList(): JSX.Element {
             {authService.isAdmin() &&
                 <Grid container>
                     {postArr.map(v =>
-                        <Grid item xs display="flex" justifyContent="center" alignItems="center" key={v.vacationId} >
+                        <Grid item xs display="flex" justifyContent="center" alignItems="center" key={v.vacationId}>
                             <AdminVacationCard vacation={v} deleteVacation={deleteMe} />
                         </Grid>
                     )}

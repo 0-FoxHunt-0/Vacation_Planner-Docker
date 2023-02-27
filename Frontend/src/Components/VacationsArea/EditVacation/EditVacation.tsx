@@ -3,24 +3,30 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import VacationModel from "../../../Models/VacationModel";
 import adminVacationsService from "../../../Services/AdminVacationsService";
+import authService from "../../../Services/AuthServices";
 import notify from "../../../Utils/Notify";
 import "./EditVacation.css";
 
 function EditVacation(): JSX.Element {
 
     const [vacation, setVacation] = useState<VacationModel>()
-
+    const [image, setImage] = useState<File>()
+    const [preview, setPreview] = useState<string>();
     const { register, handleSubmit, formState, setValue } = useForm<VacationModel>()
-
     const navigate = useNavigate()
-
     const params = useParams()
-
     const minDate = new Date();
 
     useEffect(() => {
+
+        if (!sessionStorage.getItem("userToken") || !authService.isAdmin()) {
+            notify.error("You are not logged in or authorized")
+            navigate("/")
+            return;
+        }
+
         adminVacationsService.getVacationById(+params.id)
-            .then((vacation) => {
+            .then(async (vacation) => {
                 setValue("vacationId", vacation.vacationId)
                 setValue("destination", vacation.destination)
                 setValue("description", vacation.description)
@@ -35,17 +41,33 @@ function EditVacation(): JSX.Element {
             }).catch((err) => {
                 alert(err.message)
             });
-    }, [])
+
+        if (image) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreview(reader.result as string)
+            }
+            reader.readAsDataURL(image)
+        } else {
+            setPreview(null)
+        }
+
+    }, [image])
 
     async function send(vacation: VacationModel) {
         try {
+            const startDate = new Date(vacation.startDate)
+            const nextStartDate = startDate.toISOString().split("T")[0]
+            const endDate = new Date(vacation.endDate)
+            const nextEndDate = endDate.toISOString().split("T")[0]
+            const nextMinDate = minDate.toISOString().split("T")[0]
 
-            if (new Date(vacation.startDate).getDate() < minDate.getDate()) {
+            if (nextStartDate < nextMinDate) {
                 notify.error("Vacation start date cannot go back in time!")
                 return;
             }
 
-            else if (new Date(vacation.endDate).getDate() < new Date(vacation.startDate).getDate()) {
+            else if (nextEndDate < nextStartDate) {
                 notify.error("Vacation end date cannot go back in time!")
                 return;
             }
@@ -96,16 +118,41 @@ function EditVacation(): JSX.Element {
                 <span className="Err">{formState.errors.price?.message}</span>
                 <br />
 
-                <label>Image: </label>
-                <input type="file" className="form-control" accept="image/*" {...register("image")} />
+                <label>Previous Image:</label>
+                <div className="imagePreview">
+                    <img src={vacation?.imageName} alt="" />
+                </div>
+
+                <label>Upload Image: </label>
+                <input
+                    type="file"
+                    className="form-control"
+                    accept="image/*"
+                    {...register("image")}
+                    onChange={(event) => {
+                        const file = event.target.files[0]
+                        if (file && file.type.substring(0, 5) === "image") {
+                            setImage(file)
+                        } else {
+                            setImage(null)
+                        }
+                    }}
+                />
+                <span className="Err">{formState.errors.image?.message}</span>
                 <br />
 
-                <label>Previous Image Preview:</label>
-                <img src={vacation?.imageName} alt="" />
-
-                <br /><br />
+                {preview &&
+                    <>
+                        <label>Image Preview:</label>
+                        <div className="imagePreview">
+                            <img src={preview} alt="Image Preview..." />
+                        </div>
+                        <br /><br />
+                    </>
+                }
 
                 <button type="submit" className="btn btn-warning">Update</button>
+                <br />
 
             </form>
 
