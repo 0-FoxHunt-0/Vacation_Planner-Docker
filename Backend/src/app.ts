@@ -1,13 +1,11 @@
 import cors from "cors";
 import express from "express";
-import expressFileUpload from "express-fileupload"
-
-import appConfig from "./utils/app-config";
-import routeNotFound from "./middleware/route-not-found";
+import expressFileUpload from "express-fileupload";
 import catchAll from "./middleware/catch-all";
-import userVacationRoutes from "./routes/user-vacation-routes";
+import routeNotFound from "./middleware/route-not-found";
 import adminVacationRoutes from "./routes/admin-vacation-routes";
 import authRoutes from "./routes/auth-routes";
+import userVacationRoutes from "./routes/user-vacation-routes";
 
 
 const server = express();
@@ -23,4 +21,3 @@ server.use(routeNotFound);
 server.use(catchAll);
 
 server.listen(process.env.PORT, () => console.log(`Pegasus is listening on port http://localhost:${process.env.PORT}`));
-// server.listen(appConfig.port, () => console.log(`Pegasus is listening on port http://localhost:${appConfig.port}`));

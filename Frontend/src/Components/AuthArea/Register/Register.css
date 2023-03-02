@@ -1,7 +1,3 @@
-.Register {
-	
-}
-
 .Register form {
   border: 2px solid white;
   border-radius: 5px;
@@ -13,13 +9,14 @@
   color: black;
 }
 
-.Register form > input, .Register form > button {
+.Register form>input,
+.Register form>button {
   width: 100%;
   box-sizing: border-box;
   margin-bottom: 20px;
   font-size: x-large;
 }
 
-.Register form > label {
+.Register form>label {
   font-size: x-large;
 }

@@ -1,5 +1,5 @@
 abstract class ClientError {
-  public constructor(public status: number, public message: string) {}
+  public constructor(public status: number, public message: string) { }
 }
 
 export class RouteNotFoundError extends ClientError {

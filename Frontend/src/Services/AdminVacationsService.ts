@@ -14,7 +14,7 @@ class AdminVacationsService {
       const response = await axios.get<VacationModel[]>(
         appConfig.adminVacationsUrl
       );
-      vacations = response.data;      
+      vacations = response.data;
 
       // Send all vacations into redux global state which will call the Reducer
       vacationStore.dispatch({
@@ -22,7 +22,7 @@ class AdminVacationsService {
         payload: vacations,
       });
     }
-    
+
     // Return vacations
     return vacations;
   }
@@ -63,7 +63,7 @@ class AdminVacationsService {
   }
 
   public async deleteVacation(id: number): Promise<void> {
-    await axios.delete<VacationModel>(appConfig.adminDeleteVacationUrl + id);
+    await axios.delete(appConfig.adminDeleteVacationUrl + id);
 
     vacationStore.dispatch({
       type: VacationsActionType.DeleteVacation,

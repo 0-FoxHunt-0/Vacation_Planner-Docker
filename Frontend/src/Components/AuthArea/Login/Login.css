@@ -1,7 +1,3 @@
-.Login {
-	
-}
-
 .Login form {
   border: 2px solid white;
   border-radius: 5px;
@@ -13,13 +9,14 @@
   color: black;
 }
 
-.Login form > input, .Login form > button {
+.Login form>input,
+.Login form>button {
   width: 100%;
   box-sizing: border-box;
   margin-bottom: 20px;
   font-size: x-large;
 }
 
-.Login form > label {
+.Login form>label {
   font-size: x-large;
 }

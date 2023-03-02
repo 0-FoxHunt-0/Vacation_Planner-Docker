@@ -1,5 +1,4 @@
-import mysql from "mysql"
-import appConfig from "./app-config";
+import mysql from "mysql";
 
 const connection = mysql.createPool({
     host: process.env.MYSQL_HOST,
@@ -16,7 +15,7 @@ function execute(sql: string, ...values: any[]): Promise<any> {
         connection.query(sql, values, async (err, result) => {
 
             // If there is an error executing a query:
-            if(err) {
+            if (err) {
                 reject(err);
                 return;
             }

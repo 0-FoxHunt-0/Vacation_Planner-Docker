@@ -1,26 +1,27 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import UserModel from "../../../Models/UserModel";
-import VacationModel from "../../../Models/VacationModel";
 import { authStore } from "../../../Redux/AuthState";
 import authService from "../../../Services/AuthServices";
-import appConfig from "../../../Utils/AppConfig";
 import CsvDownload from "../../VacationsArea/CsvDownload/CsvDownload";
 import "./Menu.css";
 
 function Menu(): JSX.Element {
 
     const [user, setUser] = useState<UserModel>()
-    const navigate = useNavigate()
 
     useEffect(() => {
         setUser(authStore.getState().user)
 
         // Listen to AuthState changes:
-        authStore.subscribe(() => {
+        const authUnsubscribe = authStore.subscribe(() => {
             setUser(authStore.getState().user)
         })
+        
+        return () => {
+            authUnsubscribe()
+        }
+
     }, [])
 
     function logout(): void {
@@ -54,7 +55,7 @@ function Menu(): JSX.Element {
                     >
                         <span className="navbar-toggler-icon"></span>
                     </button>
-                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div className="collapse navbar-collapse">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
                                 <NavLink
